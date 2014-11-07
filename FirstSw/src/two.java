@@ -14,7 +14,7 @@ public class two {
 	private JTextField RotauserText;
 	private JTextField textField;
 	private JTextField textField_1;
-	public JLabel ImageLabel; //그림을 불러올 Label
+	public JLabel ImageLabel; //�׸��� �ҷ��� Label
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -58,22 +58,31 @@ public class two {
 		setpanel2.add(FrameLabel);
 		
 		JRadioButton DecoRadio1 = new JRadioButton("액자1");
+		DecoRadio1.setFont(new Font("굴림", Font.PLAIN, 12));
+		DecoRadio1.setBackground(Color.WHITE);
 		DecoRadio1.setBounds(40, 56, 71, 23);
 		setpanel2.add(DecoRadio1);
 		
 		JRadioButton DecoRadio2 = new JRadioButton("액자2");
+		DecoRadio2.setFont(new Font("굴림", Font.PLAIN, 12));
+		DecoRadio2.setBackground(Color.WHITE);
 		DecoRadio2.setBounds(126, 56, 71, 23);
 		setpanel2.add(DecoRadio2);
 		
 		JRadioButton DecoRadio3 = new JRadioButton("액자3");
+		DecoRadio3.setFont(new Font("굴림", Font.PLAIN, 12));
+		DecoRadio3.setBackground(Color.WHITE);
 		DecoRadio3.setBounds(212, 56, 71, 23);
 		setpanel2.add(DecoRadio3);
 		
 		JRadioButton DecoRadio4 = new JRadioButton("액자4");
+		DecoRadio4.setBackground(Color.WHITE);
+		DecoRadio4.setFont(new Font("굴림", Font.PLAIN, 12));
 		DecoRadio4.setBounds(301, 56, 71, 23);
 		setpanel2.add(DecoRadio4);
 		
 		JButton DecosetBut = new JButton("적용");
+		DecosetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		DecosetBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -81,17 +90,18 @@ public class two {
 		DecosetBut.setBounds(384, 56, 97, 23);
 		setpanel2.add(DecosetBut);
 		
-		JLabel AddLabel = new JLabel("사진 합치기");
+		JLabel AddLabel = new JLabel("사진 합치기	");
 		AddLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		AddLabel.setBounds(30, 85, 81, 15);
 		setpanel2.add(AddLabel);
 		
 		JButton AddBut = new JButton("사진 불러오기");
+		AddBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		AddBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		AddBut.setBounds(206, 91, 109, 23);
+		AddBut.setBounds(206, 91, 130, 23);
 		setpanel2.add(AddBut);
 		
 		JPanel setpanel1 = new JPanel();
@@ -118,11 +128,13 @@ public class two {
 		setpanel1.add(Brightslider);
 		
 		JLabel BrightvalueLabel = new JLabel("0");
+		BrightvalueLabel.setFont(new Font("굴림", Font.PLAIN, 12));
 		BrightvalueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		BrightvalueLabel.setBounds(273, 53, 45, 15);
 		setpanel1.add(BrightvalueLabel);
 		
 		JButton BirightsetBut = new JButton("적용");
+		BirightsetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		BirightsetBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -136,18 +148,22 @@ public class two {
 		setpanel1.add(FilterLabel);
 		
 		JButton FilterBrackBut = new JButton("흑백");
+		FilterBrackBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterBrackBut.setBounds(30, 125, 97, 23);
 		setpanel1.add(FilterBrackBut);
 		
 		JButton FilterBlurBut = new JButton("흐림");
+		FilterBlurBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterBlurBut.setBounds(174, 125, 97, 23);
 		setpanel1.add(FilterBlurBut);
 		
 		JButton FilterSepBut = new JButton("세피아");
+		FilterSepBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterSepBut.setBounds(313, 125, 97, 23);
 		setpanel1.add(FilterSepBut);
 		
 		JButton FilterSharBut = new JButton("선명");
+		FilterSharBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterSharBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -156,6 +172,7 @@ public class two {
 		setpanel1.add(FilterSharBut);
 		
 		JButton FilterRevBut = new JButton("반전");
+		FilterRevBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterRevBut.setBounds(174, 158, 97, 23);
 		setpanel1.add(FilterRevBut);
 		
@@ -164,19 +181,22 @@ public class two {
 		TransLabel.setBounds(20, 201, 67, 15);
 		setpanel1.add(TransLabel);
 		
-		JRadioButton RotacwRadio = new JRadioButton("시계 방향"); //RotaRadio = 시계방향 버튼
+		JRadioButton RotacwRadio = new JRadioButton("시계 방향"); //RotaRadio = �ð���� ��ư
+		RotacwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotacwRadio.setBackground(Color.WHITE);
 		RotacwRadio.setBounds(30, 254, 121, 23);
 		setpanel1.add(RotacwRadio);
 		
 		JRadioButton RotaccwRadio = new JRadioButton("반시계 방향");
+		RotaccwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotaccwRadio.setBackground(Color.WHITE);
 		RotaccwRadio.setBounds(174, 254, 121, 23);
 		setpanel1.add(RotaccwRadio);
 		
 		JRadioButton RotauserRadio = new JRadioButton("사용자 지정 : ");
+		RotauserRadio.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotauserRadio.setBackground(Color.WHITE);
-		RotauserRadio.setBounds(30, 287, 121, 23);
+		RotauserRadio.setBounds(30, 287, 108, 23);
 		setpanel1.add(RotauserRadio);
 		
 		JLabel RotationLabel = new JLabel("회전");
@@ -185,11 +205,13 @@ public class two {
 		setpanel1.add(RotationLabel);
 		
 		RotauserText = new JTextField();
-		RotauserText.setBounds(159, 287, 143, 23);
+		RotauserText.setFont(new Font("굴림", Font.PLAIN, 12));
+		RotauserText.setBounds(146, 287, 143, 23);
 		setpanel1.add(RotauserText);
 		RotauserText.setColumns(10);
 		
 		JButton RotasetBut = new JButton("적용");
+		RotasetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotasetBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
@@ -203,6 +225,7 @@ public class two {
 		setpanel1.add(RevLabel);
 		
 		JButton RevRLBut = new JButton("좌우 반전");
+		RevRLBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		RevRLBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -211,6 +234,7 @@ public class two {
 		setpanel1.add(RevRLBut);
 		
 		JButton RevTBBut = new JButton("상하 반전");
+		RevTBBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		RevTBBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -234,6 +258,7 @@ public class two {
 		textField.setColumns(10);
 		
 		JLabel SizeYLabel = new JLabel("세로 :");
+		SizeYLabel.setFont(new Font("굴림", Font.PLAIN, 12));
 		SizeYLabel.setBounds(181, 405, 40, 15);
 		setpanel1.add(SizeYLabel);
 		
@@ -243,6 +268,7 @@ public class two {
 		textField_1.setColumns(10);
 		
 		JButton SizesetBut = new JButton("적용");
+		SizesetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		SizesetBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -257,30 +283,31 @@ public class two {
 		
 		JRadioButton JpegRadio = new JRadioButton("JPEG");
 		JpegRadio.setBackground(Color.WHITE);
-		JpegRadio.setBounds(40, 464, 67, 23);
+		JpegRadio.setBounds(40, 464, 87, 23);
 		setpanel1.add(JpegRadio);
 		
 		JRadioButton JpgRadio = new JRadioButton("JPG");
 		JpgRadio.setBackground(Color.WHITE);
-		JpgRadio.setBounds(174, 464, 67, 23);
+		JpgRadio.setBounds(174, 464, 87, 23);
 		setpanel1.add(JpgRadio);
 		
 		JRadioButton BmpRadio = new JRadioButton("BMP");
 		BmpRadio.setBackground(Color.WHITE);
-		BmpRadio.setBounds(313, 464, 67, 23);
+		BmpRadio.setBounds(313, 464, 80, 23);
 		setpanel1.add(BmpRadio);
 		
 		JRadioButton PngRadio = new JRadioButton("PNG");
 		PngRadio.setBackground(Color.WHITE);
-		PngRadio.setBounds(40, 495, 70, 23);
+		PngRadio.setBounds(40, 495, 87, 23);
 		setpanel1.add(PngRadio);
 		
 		JRadioButton GifRadio = new JRadioButton("GIF");
 		GifRadio.setBackground(Color.WHITE);
-		GifRadio.setBounds(174, 495, 67, 23);
+		GifRadio.setBounds(174, 495, 87, 23);
 		setpanel1.add(GifRadio);
 		
 		JButton FormsetBut = new JButton("적용");
+		FormsetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FormsetBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -294,6 +321,7 @@ public class two {
 		setpanel1.add(CutLabel);
 		
 		JButton CutBut = new JButton("자르기");
+		CutBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		CutBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -302,6 +330,7 @@ public class two {
 		setpanel1.add(CutBut);
 		
 		JButton ResetBut = new JButton("원본 되돌리기");
+		ResetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		ResetBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -332,7 +361,7 @@ public class two {
 		menuBar.add(mnNewMenu_1);
 	}
 	
-	//희정 - MenuBarEvent
+	//���� - MenuBarEvent
 	class OpenActionListener implements ActionListener
 	{
 		JFileChooser chooser;
@@ -353,7 +382,7 @@ public class two {
 				return;
 			}
 			
-			//사용자가 파일을 선택하고 "열기"버튼을 누른 경우
+			//����ڰ� ������ �����ϰ� "����"��ư�� ���� ���
 			String filePath = chooser.getSelectedFile().getPath();
 			ImageLabel.setIcon(new ImageIcon(filePath));
 			
