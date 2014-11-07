@@ -1,0 +1,27 @@
+!SESSION 2014-11-08 00:21:27.171 -----------------------------------------------
+eclipse.buildId=M20120914-1800
+java.version=1.8.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86 -data F:\sw_wansikcam\FirstSw
+
+!ENTRY org.eclipse.ui 2 2 2014-11-08 00:21:44.924
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2014-11-08 00:27:01.186 -----------------------------------------------
+eclipse.buildId=M20120914-1800
+java.version=1.8.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86 -data F:\sw_wansikcam\FirstSw
+
+!ENTRY org.eclipse.ui 2 2 2014-11-08 00:27:13.358
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2014-11-08 00:54:25.381 -----------------------------------------------
+eclipse.buildId=M20120914-1800
+java.version=1.8.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86 -data F:\sw_wansikcam\FirstSw
+
+!ENTRY org.eclipse.ui 2 2 2014-11-08 00:54:36.367
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
