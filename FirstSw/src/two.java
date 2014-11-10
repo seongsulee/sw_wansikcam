@@ -8,7 +8,7 @@ import java.awt.event.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.*;
 
-public class two {
+public class ImSWproject {
 
 	private JFrame frmWansikcam;
 	private JTextField RotauserText;
@@ -19,7 +19,7 @@ public class two {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					two window = new two();
+					ImSWproject window = new ImSWproject();
 					window.frmWansikcam.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -29,7 +29,7 @@ public class two {
 	}
 
 
-	public two() 
+	public ImSWproject() 
 	{
 		initialize();
 	}
