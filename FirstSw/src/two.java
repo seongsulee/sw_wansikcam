@@ -1,3 +1,5 @@
+package sw_project_wansikcam;
+
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -12,412 +14,440 @@ import java.awt.event.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.*;
 
-public class ImSWproject {
+public class wansikcam_main {
 
-	private JFrame frmWansikcam;
-	private JTextField RotauserText;
-	private JTextField textField;
-	private JTextField textField_1;
-	public JLabel ImageLabel = new JLabel(); // �׸��� �ҷ��� Label
-	Image pic2;
-	
+   private JFrame frmWansikcam;
+   private JTextField RotauserText;
+   private JTextField textField;
+   private JTextField textField_1;
+   Image pic = null;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ImSWproject window = new ImSWproject();
-					window.frmWansikcam.setVisible(true);
-					//window.ImageLabel.setVisible(true);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+   public static void main(String[] args) {
+      EventQueue.invokeLater(new Runnable() {
+         public void run() {
+            try {
+               wansikcam_main window = new wansikcam_main();
+               window.frmWansikcam.setVisible(true);
+               //window.ImageLabel.setVisible(true);
+               
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+         }
+      });
+   }
 
-	public ImSWproject() {
-		initialize();
-	}
+   public wansikcam_main() {
+      initialize();
+   }
 
-	private void initialize() {
-		frmWansikcam = new JFrame();
-		frmWansikcam.setTitle("Wansikcam");
-		frmWansikcam.setBounds(100, 100, 1002, 729);
-		frmWansikcam.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmWansikcam.getContentPane().setLayout(null);
-		
-		/*
-		JPanel setpanel3 = new JPanel();
-		setpanel3.setBackground(Color.WHITE);
-		setpanel3.setBounds(12, 10, 512, 512);
-		frmWansikcam.getContentPane().add(setpanel3);
-		setpanel3.setLayout(null);
-		*/
-		JPanel setpanel3 = new JPanel();
-		setpanel3.setBackground(Color.WHITE);
-		setpanel3.setBounds(12, 10, 512, 512);
-		frmWansikcam.getContentPane().add(setpanel3);
-		setpanel3.setLayout(null);
-		
-		
-		JPanel setpanel2 = new JPanel();
-		setpanel2.setBackground(Color.WHITE);
-		setpanel2.setBounds(12, 532, 512, 124);
-		frmWansikcam.getContentPane().add(setpanel2);
-		setpanel2.setLayout(null);
+   private void initialize() {
+      frmWansikcam = new JFrame();
+      frmWansikcam.setTitle("Wansikcam");
+      frmWansikcam.setBounds(100, 100, 1002, 729);
+      frmWansikcam.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frmWansikcam.getContentPane().setLayout(null);
+      
+      /*
+      JPanel setpanel3 = new JPanel();
+      setpanel3.setBackground(Color.WHITE);
+      setpanel3.setBounds(12, 10, 512, 512);
+      frmWansikcam.getContentPane().add(setpanel3);
+      setpanel3.setLayout(null);
+      */
 
-		JLabel DecoLabel = new JLabel("꾸미기");
-		DecoLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		DecoLabel.setBounds(20, 12, 57, 15);
-		setpanel2.add(DecoLabel);
+      JPanel setpanel2 = new JPanel();
+      setpanel2.setBackground(Color.WHITE);
+      setpanel2.setBounds(12, 532, 512, 124);
+      frmWansikcam.getContentPane().add(setpanel2);
+      setpanel2.setLayout(null);
 
-		JLabel FrameLabel = new JLabel("액자 꾸미기");
-		FrameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		FrameLabel.setBounds(30, 34, 81, 15);
-		setpanel2.add(FrameLabel);
+      JLabel DecoLabel = new JLabel("꾸미기");
+      DecoLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+      DecoLabel.setBounds(20, 12, 57, 15);
+      setpanel2.add(DecoLabel);
 
-		JRadioButton DecoRadio1 = new JRadioButton("액자1");
-		DecoRadio1.setFont(new Font("굴림", Font.PLAIN, 12));
-		DecoRadio1.setBackground(Color.WHITE);
-		DecoRadio1.setBounds(40, 56, 71, 23);
-		setpanel2.add(DecoRadio1);
+      JLabel FrameLabel = new JLabel("액자 꾸미기");
+      FrameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+      FrameLabel.setBounds(30, 34, 81, 15);
+      setpanel2.add(FrameLabel);
 
-		JRadioButton DecoRadio2 = new JRadioButton("액자2");
-		DecoRadio2.setFont(new Font("굴림", Font.PLAIN, 12));
-		DecoRadio2.setBackground(Color.WHITE);
-		DecoRadio2.setBounds(126, 56, 71, 23);
-		setpanel2.add(DecoRadio2);
+      JRadioButton DecoRadio1 = new JRadioButton("액자1");
+      DecoRadio1.setFont(new Font("굴림", Font.PLAIN, 12));
+      DecoRadio1.setBackground(Color.WHITE);
+      DecoRadio1.setBounds(40, 56, 71, 23);
+      setpanel2.add(DecoRadio1);
 
-		JRadioButton DecoRadio3 = new JRadioButton("액자3");
-		DecoRadio3.setFont(new Font("굴림", Font.PLAIN, 12));
-		DecoRadio3.setBackground(Color.WHITE);
-		DecoRadio3.setBounds(212, 56, 71, 23);
-		setpanel2.add(DecoRadio3);
+      JRadioButton DecoRadio2 = new JRadioButton("액자2");
+      DecoRadio2.setFont(new Font("굴림", Font.PLAIN, 12));
+      DecoRadio2.setBackground(Color.WHITE);
+      DecoRadio2.setBounds(126, 56, 71, 23);
+      setpanel2.add(DecoRadio2);
 
-		JRadioButton DecoRadio4 = new JRadioButton("액자4");
-		DecoRadio4.setBackground(Color.WHITE);
-		DecoRadio4.setFont(new Font("굴림", Font.PLAIN, 12));
-		DecoRadio4.setBounds(301, 56, 71, 23);
-		setpanel2.add(DecoRadio4);
+      JRadioButton DecoRadio3 = new JRadioButton("액자3");
+      DecoRadio3.setFont(new Font("굴림", Font.PLAIN, 12));
+      DecoRadio3.setBackground(Color.WHITE);
+      DecoRadio3.setBounds(212, 56, 71, 23);
+      setpanel2.add(DecoRadio3);
 
-		JButton DecosetBut = new JButton("적용");
-		DecosetBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		DecosetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		DecosetBut.setBounds(384, 56, 97, 23);
-		setpanel2.add(DecosetBut);
+      JRadioButton DecoRadio4 = new JRadioButton("액자4");
+      DecoRadio4.setBackground(Color.WHITE);
+      DecoRadio4.setFont(new Font("굴림", Font.PLAIN, 12));
+      DecoRadio4.setBounds(301, 56, 71, 23);
+      setpanel2.add(DecoRadio4);
 
-		JLabel AddLabel = new JLabel("사진 합치기	");
-		AddLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		AddLabel.setBounds(30, 85, 81, 15);
-		setpanel2.add(AddLabel);
+      JButton DecosetBut = new JButton("적용");
+      DecosetBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      DecosetBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         }
+      });
+      DecosetBut.setBounds(384, 56, 97, 23);
+      setpanel2.add(DecosetBut);
 
-		JButton AddBut = new JButton("사진 불러오기");
-		AddBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		AddBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		AddBut.setBounds(206, 91, 130, 23);
-		setpanel2.add(AddBut);
+      JLabel AddLabel = new JLabel("사진 합치기   ");
+      AddLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+      AddLabel.setBounds(30, 85, 81, 15);
+      setpanel2.add(AddLabel);
 
-		JPanel setpanel1 = new JPanel();
-		setpanel1.setBackground(Color.WHITE);
-		setpanel1.setBounds(536, 10, 438, 646);
-		frmWansikcam.getContentPane().add(setpanel1);
-		setpanel1.setLayout(null);
+      JButton AddBut = new JButton("사진 불러오기");
+      AddBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      AddBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         }
+      });
+      AddBut.setBounds(206, 91, 130, 23);
+      setpanel2.add(AddBut);
+      
 
-		JLabel BrightLabel = new JLabel("밝기 조절");
-		BrightLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		BrightLabel.setBounds(20, 20, 67, 15);
-		setpanel1.add(BrightLabel);
+      //??????????????????????????????????????????????????????????
+      MyPanel myp = new MyPanel();
+      myp.setOpaque(true);
+      myp.setBackground(Color.BLACK);
+      myp.setBounds(0, 0, 512, 512);
+      frmWansikcam.getContentPane().add(myp);
+      //frmWansikcam.add(ImageLabel);
 
-		JSlider Brightslider = new JSlider();
-		Brightslider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-			}
-		});
-		Brightslider.setValue(0);
-		Brightslider.setMinimum(-50);
-		Brightslider.setMaximum(50);
-		Brightslider.setBackground(Color.WHITE);
-		Brightslider.setBounds(30, 50, 231, 23);
-		setpanel1.add(Brightslider);
+      //???????????????????????????????????????????????????????????
+      
+      JPanel setpanel1 = new JPanel();
+      setpanel1.setBackground(Color.WHITE);
+      setpanel1.setBounds(536, 10, 438, 646);
+      frmWansikcam.getContentPane().add(setpanel1);
+      setpanel1.setLayout(null);
 
-		JLabel BrightvalueLabel = new JLabel("0");
-		BrightvalueLabel.setFont(new Font("굴림", Font.PLAIN, 12));
-		BrightvalueLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		BrightvalueLabel.setBounds(273, 53, 45, 15);
-		setpanel1.add(BrightvalueLabel);
+      JLabel BrightLabel = new JLabel("밝기 조절");
+      BrightLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+      BrightLabel.setBounds(20, 20, 67, 15);
+      setpanel1.add(BrightLabel);
 
-		JButton BirightsetBut = new JButton("적용");
-		BirightsetBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		BirightsetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		BirightsetBut.setBounds(330, 50, 80, 23);
-		setpanel1.add(BirightsetBut);
+      JSlider Brightslider = new JSlider();
+      Brightslider.addChangeListener(new ChangeListener() {
+         public void stateChanged(ChangeEvent arg0) {
+         }
+      });
+      Brightslider.setValue(0);
+      Brightslider.setMinimum(-50);
+      Brightslider.setMaximum(50);
+      Brightslider.setBackground(Color.WHITE);
+      Brightslider.setBounds(30, 50, 231, 23);
+      setpanel1.add(Brightslider);
 
-		JLabel FilterLabel = new JLabel("필터 효과");
-		FilterLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		FilterLabel.setBounds(20, 95, 67, 15);
-		setpanel1.add(FilterLabel);
+      JLabel BrightvalueLabel = new JLabel("0");
+      BrightvalueLabel.setFont(new Font("굴림", Font.PLAIN, 12));
+      BrightvalueLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      BrightvalueLabel.setBounds(273, 53, 45, 15);
+      setpanel1.add(BrightvalueLabel);
 
-		JButton FilterBrackBut = new JButton("흑백");
-		FilterBrackBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FilterBrackBut.setBounds(30, 125, 97, 23);
-		setpanel1.add(FilterBrackBut);
+      JButton BirightsetBut = new JButton("적용");
+      BirightsetBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      BirightsetBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent arg0) {
+         }
+      });
+      BirightsetBut.setBounds(330, 50, 80, 23);
+      setpanel1.add(BirightsetBut);
 
-		JButton FilterBlurBut = new JButton("흐림");
-		FilterBlurBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FilterBlurBut.setBounds(174, 125, 97, 23);
-		setpanel1.add(FilterBlurBut);
+      JLabel FilterLabel = new JLabel("필터 효과");
+      FilterLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+      FilterLabel.setBounds(20, 95, 67, 15);
+      setpanel1.add(FilterLabel);
 
-		JButton FilterSepBut = new JButton("세피아");
-		FilterSepBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FilterSepBut.setBounds(313, 125, 97, 23);
-		setpanel1.add(FilterSepBut);
+      JButton FilterBrackBut = new JButton("흑백");
+      FilterBrackBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      FilterBrackBut.setBounds(30, 125, 97, 23);
+      setpanel1.add(FilterBrackBut);
 
-		JButton FilterSharBut = new JButton("선명");
-		FilterSharBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FilterSharBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		FilterSharBut.setBounds(30, 158, 97, 23);
-		setpanel1.add(FilterSharBut);
+      JButton FilterBlurBut = new JButton("흐림");
+      FilterBlurBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      FilterBlurBut.setBounds(174, 125, 97, 23);
+      setpanel1.add(FilterBlurBut);
 
-		JButton FilterRevBut = new JButton("반전");
-		FilterRevBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FilterRevBut.setBounds(174, 158, 97, 23);
-		setpanel1.add(FilterRevBut);
+      JButton FilterSepBut = new JButton("세피아");
+      FilterSepBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      FilterSepBut.setBounds(313, 125, 97, 23);
+      setpanel1.add(FilterSepBut);
 
-		JLabel TransLabel = new JLabel("사진 변형");
-		TransLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-		TransLabel.setBounds(20, 201, 67, 15);
-		setpanel1.add(TransLabel);
+      JButton FilterSharBut = new JButton("선명");
+      FilterSharBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      FilterSharBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent arg0) {
+         }
+      });
+      FilterSharBut.setBounds(30, 158, 97, 23);
+      setpanel1.add(FilterSharBut);
 
-		JRadioButton RotacwRadio = new JRadioButton("시계 방향"); // RotaRadio =
-																// �ð���� ��ư
-		RotacwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
-		RotacwRadio.setBackground(Color.WHITE);
-		RotacwRadio.setBounds(30, 254, 121, 23);
-		setpanel1.add(RotacwRadio);
+      JButton FilterRevBut = new JButton("반전");
+      FilterRevBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      FilterRevBut.setBounds(174, 158, 97, 23);
+      setpanel1.add(FilterRevBut);
 
-		JRadioButton RotaccwRadio = new JRadioButton("반시계 방향");
-		RotaccwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
-		RotaccwRadio.setBackground(Color.WHITE);
-		RotaccwRadio.setBounds(174, 254, 121, 23);
-		setpanel1.add(RotaccwRadio);
+      JLabel TransLabel = new JLabel("사진 변형");
+      TransLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+      TransLabel.setBounds(20, 201, 67, 15);
+      setpanel1.add(TransLabel);
 
-		JRadioButton RotauserRadio = new JRadioButton("사용자 지정 : ");
-		RotauserRadio.setFont(new Font("굴림", Font.PLAIN, 12));
-		RotauserRadio.setBackground(Color.WHITE);
-		RotauserRadio.setBounds(30, 287, 108, 23);
-		setpanel1.add(RotauserRadio);
+      JRadioButton RotacwRadio = new JRadioButton("시계 방향"); // RotaRadio =
+                                                // ?ð???? ???
+      RotacwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
+      RotacwRadio.setBackground(Color.WHITE);
+      RotacwRadio.setBounds(30, 254, 121, 23);
+      setpanel1.add(RotacwRadio);
 
-		JLabel RotationLabel = new JLabel("회전");
-		RotationLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		RotationLabel.setBounds(30, 226, 57, 15);
-		setpanel1.add(RotationLabel);
+      JRadioButton RotaccwRadio = new JRadioButton("반시계 방향");
+      RotaccwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
+      RotaccwRadio.setBackground(Color.WHITE);
+      RotaccwRadio.setBounds(174, 254, 121, 23);
+      setpanel1.add(RotaccwRadio);
 
-		RotauserText = new JTextField();
-		RotauserText.setFont(new Font("굴림", Font.PLAIN, 12));
-		RotauserText.setBounds(146, 287, 143, 23);
-		setpanel1.add(RotauserText);
-		RotauserText.setColumns(10);
+      JRadioButton RotauserRadio = new JRadioButton("사용자 지정 : ");
+      RotauserRadio.setFont(new Font("굴림", Font.PLAIN, 12));
+      RotauserRadio.setBackground(Color.WHITE);
+      RotauserRadio.setBounds(30, 287, 108, 23);
+      setpanel1.add(RotauserRadio);
 
-		JButton RotasetBut = new JButton("적용");
-		RotasetBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		RotasetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		RotasetBut.setBounds(313, 287, 97, 23);
-		setpanel1.add(RotasetBut);
+      JLabel RotationLabel = new JLabel("회전");
+      RotationLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+      RotationLabel.setBounds(30, 226, 57, 15);
+      setpanel1.add(RotationLabel);
 
-		JLabel RevLabel = new JLabel("반전");
-		RevLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		RevLabel.setBounds(30, 320, 80, 15);
-		setpanel1.add(RevLabel);
+      RotauserText = new JTextField();
+      RotauserText.setFont(new Font("굴림", Font.PLAIN, 12));
+      RotauserText.setBounds(146, 287, 143, 23);
+      setpanel1.add(RotauserText);
+      RotauserText.setColumns(10);
 
-		JButton RevRLBut = new JButton("좌우 반전");
-		RevRLBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		RevRLBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		RevRLBut.setBounds(78, 345, 97, 23);
-		setpanel1.add(RevRLBut);
+      JButton RotasetBut = new JButton("적용");
+      RotasetBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      RotasetBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent arg0) {
+         }
+      });
+      RotasetBut.setBounds(313, 287, 97, 23);
+      setpanel1.add(RotasetBut);
 
-		JButton RevTBBut = new JButton("상하 반전");
-		RevTBBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		RevTBBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		RevTBBut.setBounds(252, 345, 97, 23);
-		setpanel1.add(RevTBBut);
+      JLabel RevLabel = new JLabel("반전");
+      RevLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+      RevLabel.setBounds(30, 320, 80, 15);
+      setpanel1.add(RevLabel);
 
-		JLabel SizeLabel = new JLabel("크기 조절");
-		SizeLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		SizeLabel.setBounds(30, 380, 57, 15);
-		setpanel1.add(SizeLabel);
+      JButton RevRLBut = new JButton("좌우 반전");
+      RevRLBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      RevRLBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         }
+      });
+      RevRLBut.setBounds(78, 345, 97, 23);
+      setpanel1.add(RevRLBut);
 
-		JLabel SizeXLabel = new JLabel("가로 :");
-		SizeXLabel.setFont(new Font("Gulim", Font.PLAIN, 12));
-		SizeXLabel.setBounds(40, 405, 40, 15);
-		setpanel1.add(SizeXLabel);
+      JButton RevTBBut = new JButton("상하 반전");
+      RevTBBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      RevTBBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         }
+      });
+      RevTBBut.setBounds(252, 345, 97, 23);
+      setpanel1.add(RevTBBut);
 
-		textField = new JTextField();
-		textField.setBounds(85, 404, 80, 16);
-		setpanel1.add(textField);
-		textField.setColumns(10);
+      JLabel SizeLabel = new JLabel("크기 조절");
+      SizeLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+      SizeLabel.setBounds(30, 380, 57, 15);
+      setpanel1.add(SizeLabel);
 
-		JLabel SizeYLabel = new JLabel("세로 :");
-		SizeYLabel.setFont(new Font("굴림", Font.PLAIN, 12));
-		SizeYLabel.setBounds(181, 405, 40, 15);
-		setpanel1.add(SizeYLabel);
+      JLabel SizeXLabel = new JLabel("가로 :");
+      SizeXLabel.setFont(new Font("Gulim", Font.PLAIN, 12));
+      SizeXLabel.setBounds(40, 405, 40, 15);
+      setpanel1.add(SizeXLabel);
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(225, 404, 80, 16);
-		setpanel1.add(textField_1);
-		textField_1.setColumns(10);
+      textField = new JTextField();
+      textField.setBounds(85, 404, 80, 16);
+      setpanel1.add(textField);
+      textField.setColumns(10);
 
-		JButton SizesetBut = new JButton("적용");
-		SizesetBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      JLabel SizeYLabel = new JLabel("세로 :");
+      SizeYLabel.setFont(new Font("굴림", Font.PLAIN, 12));
+      SizeYLabel.setBounds(181, 405, 40, 15);
+      setpanel1.add(SizeYLabel);
 
-		// ���� - SizeChangeEvent
-		SizesetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+      textField_1 = new JTextField();
+      textField_1.setBounds(225, 404, 80, 16);
+      setpanel1.add(textField_1);
+      textField_1.setColumns(10);
 
-			}
-		});
-		SizesetBut.setBounds(313, 401, 97, 23);
-		setpanel1.add(SizesetBut);
+      JButton SizesetBut = new JButton("적용");
+      SizesetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 
-		JLabel FormLabel = new JLabel("포멧 변경");
-		FormLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		FormLabel.setBounds(30, 440, 57, 15);
-		setpanel1.add(FormLabel);
+      // ???? - SizeChangeEvent
+      SizesetBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
 
-		JRadioButton JpegRadio = new JRadioButton("JPEG");
-		JpegRadio.setBackground(Color.WHITE);
-		JpegRadio.setBounds(40, 464, 87, 23);
-		setpanel1.add(JpegRadio);
+         }
+      });
+      SizesetBut.setBounds(313, 401, 97, 23);
+      setpanel1.add(SizesetBut);
 
-		JRadioButton JpgRadio = new JRadioButton("JPG");
-		JpgRadio.setBackground(Color.WHITE);
-		JpgRadio.setBounds(174, 464, 87, 23);
-		setpanel1.add(JpgRadio);
+      JLabel FormLabel = new JLabel("포멧 변경");
+      FormLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+      FormLabel.setBounds(30, 440, 57, 15);
+      setpanel1.add(FormLabel);
 
-		JRadioButton BmpRadio = new JRadioButton("BMP");
-		BmpRadio.setBackground(Color.WHITE);
-		BmpRadio.setBounds(313, 464, 80, 23);
-		setpanel1.add(BmpRadio);
+      JRadioButton JpegRadio = new JRadioButton("JPEG");
+      JpegRadio.setBackground(Color.WHITE);
+      JpegRadio.setBounds(40, 464, 87, 23);
+      setpanel1.add(JpegRadio);
 
-		JRadioButton PngRadio = new JRadioButton("PNG");
-		PngRadio.setBackground(Color.WHITE);
-		PngRadio.setBounds(40, 495, 87, 23);
-		setpanel1.add(PngRadio);
+      JRadioButton JpgRadio = new JRadioButton("JPG");
+      JpgRadio.setBackground(Color.WHITE);
+      JpgRadio.setBounds(174, 464, 87, 23);
+      setpanel1.add(JpgRadio);
 
-		JRadioButton GifRadio = new JRadioButton("GIF");
-		GifRadio.setBackground(Color.WHITE);
-		GifRadio.setBounds(174, 495, 87, 23);
-		setpanel1.add(GifRadio);
+      JRadioButton BmpRadio = new JRadioButton("BMP");
+      BmpRadio.setBackground(Color.WHITE);
+      BmpRadio.setBounds(313, 464, 80, 23);
+      setpanel1.add(BmpRadio);
 
-		JButton FormsetBut = new JButton("적용");
-		FormsetBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FormsetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		FormsetBut.setBounds(313, 495, 97, 23);
-		setpanel1.add(FormsetBut);
+      JRadioButton PngRadio = new JRadioButton("PNG");
+      PngRadio.setBackground(Color.WHITE);
+      PngRadio.setBounds(40, 495, 87, 23);
+      setpanel1.add(PngRadio);
 
-		JLabel CutLabel = new JLabel("자르기");
-		CutLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		CutLabel.setBounds(30, 531, 57, 15);
-		setpanel1.add(CutLabel);
+      JRadioButton GifRadio = new JRadioButton("GIF");
+      GifRadio.setBackground(Color.WHITE);
+      GifRadio.setBounds(174, 495, 87, 23);
+      setpanel1.add(GifRadio);
 
-		JButton CutBut = new JButton("자르기");
-		CutBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		CutBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		CutBut.setBounds(40, 556, 97, 23);
-		setpanel1.add(CutBut);
+      JButton FormsetBut = new JButton("적용");
+      FormsetBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      FormsetBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         }
+      });
+      FormsetBut.setBounds(313, 495, 97, 23);
+      setpanel1.add(FormsetBut);
 
-		JButton ResetBut = new JButton("원본 되돌리기");
-		ResetBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		ResetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		ResetBut.setBounds(283, 601, 127, 23);
-		setpanel1.add(ResetBut);
+      JLabel CutLabel = new JLabel("자르기");
+      CutLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+      CutLabel.setBounds(30, 531, 57, 15);
+      setpanel1.add(CutLabel);
 
-		//??????????????????????????????????????????????????????????
-		ImageLabel = new JLabel("hi");
-		ImageLabel.setBackground(Color.WHITE);
-		ImageLabel.setBounds(12, 10, 512, 512);
-		frmWansikcam.getContentPane().add(ImageLabel);
-		ImageLabel.setLayout(null);
-		//frmWansikcam.add(ImageLabel);
+      JButton CutBut = new JButton("자르기");
+      CutBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      CutBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         }
+      });
+      CutBut.setBounds(40, 556, 97, 23);
+      setpanel1.add(CutBut);
 
-		//???????????????????????????????????????????????????????????
-		
+      JButton ResetBut = new JButton("원본 되돌리기");
+      ResetBut.setFont(new Font("굴림", Font.PLAIN, 12));
+      ResetBut.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         }
+      });
+      ResetBut.setBounds(283, 601, 127, 23);
+      setpanel1.add(ResetBut);
 
-		JMenuBar menuBar = new JMenuBar();
-		frmWansikcam.setJMenuBar(menuBar);
 
-		JMenu FileMenu = new JMenu("File");
-		JMenuItem openItem = new JMenuItem("Open");
+      JMenuBar menuBar = new JMenuBar();
+      frmWansikcam.setJMenuBar(menuBar);
 
-		// Open ActionListener
-		openItem.addActionListener(new OpenActionListener());
-		FileMenu.add(openItem);
+      JMenu FileMenu = new JMenu("File");
+      JMenuItem openItem = new JMenuItem("Open");
 
-		menuBar.add(FileMenu);
-		// this.setJMenuBar(menuBar);
+      // Open ActionListener
+      openItem.addActionListener(new OpenActionListener());
+      FileMenu.add(openItem);
 
-		JMenu mnNewMenu_1 = new JMenu("New menu");
-		menuBar.add(mnNewMenu_1);
-	}
+      menuBar.add(FileMenu);
+      // this.setJMenuBar(menuBar);
 
-	// ���� - MenuBarEvent
-	class OpenActionListener implements ActionListener {
-		JFileChooser chooser;
+      JMenu mnNewMenu_1 = new JMenu("New menu");
+      menuBar.add(mnNewMenu_1);
+   }
 
-		OpenActionListener() {
-			chooser = new JFileChooser();
-		}
+   // ???? - MenuBarEvent
+   class OpenActionListener implements ActionListener {
+      JFileChooser chooser;
 
-		public void actionPerformed(ActionEvent e) {
-			FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					"Images", "jpg", "gif", "jpeg", "png", "bmp");
-			chooser.setFileFilter(filter);
-			int ret = chooser.showOpenDialog(null);
-			if (ret != JFileChooser.APPROVE_OPTION) {
-				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.", "경고",
-						JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-			// ����ڰ� ������ �����ϰ� "����"��ư�� ���� ���
-			String filePath = chooser.getSelectedFile().getPath();
-			//pic = Toolkit.getDefaultToolkit().getImage(filePath);
-			pic2 = new ImageIcon(filePath).getImage();
-			
-			ImageLabel.getGraphics().drawImage(pic2, 0, 0, 512, 512, ImageLabel);
-		}
-		
-	}
-	
+      OpenActionListener() {
+         chooser = new JFileChooser();
+      }
+
+      public void actionPerformed(ActionEvent e) {
+         FileNameExtensionFilter filter = new FileNameExtensionFilter(
+               "Images", "jpg", "gif", "jpeg", "png", "bmp");
+         chooser.setFileFilter(filter);
+         int ret = chooser.showOpenDialog(null);
+         if (ret != JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.", "경고",
+                  JOptionPane.WARNING_MESSAGE);
+            return;
+         }
+         // ?????? ?????? ??????? "????"????? ???? ???
+         String filePath = chooser.getSelectedFile().getPath();
+         
+         pic = Toolkit.getDefaultToolkit().getImage(filePath);
+         //Image pic2;
+         //pic2 = new ImageIcon(filePath).getImage();
+         
+         
+         //frmWansikcam.add(pic);
+         
+         
+         //ImageLabel.setIcon(pic);
+         //frmWansikcam.getContentPane().add(new MyPanel());
+         //ImageLabel.setVisible(false);
+         //MyPanel mp = new MyPanel();
+         //   mp.setOpaque(false);
+         //ImageLabel.setVisible(false);
+         //frmWansikcam.add(new MyPanel());
+         
+         //ImageLabel.getGraphics().drawImage(pic2, 12, 10, 512, 512, ImageLabel);
+         
+         //ImageLabel.add(new MyPanel());
+         //System.out.println("hi");
+         // drawImage(pic, 0, 0, this)
+         myPanel.setIcon(new ImageIcon(filePath));
+         //ImageLabel.setIcon(new ImageIcon(filePath));
+         
+      }
+   }
+   
+   class MyPanel extends JPanel {
+
+      MyPanel()
+      {
+         System.out.println("hi");
+      }
+      public void paintComponent(Graphics g) // 객체가 생성되는 순간 그리게 된다
+      {
+         //ImageIcon img = new ImageIcon(filePath);
+         super.paintComponent(g);
+         System.out.println("hi2");
+         g.drawImage(pic, 12, 10, 512, 512, this); // 현재 객체에 이미지를 그린다
+      }
+   }
 }
+
 
