@@ -1,12 +1,20 @@
 import java.awt.EventQueue;
 import java.awt.Window;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+
 import javax.swing.event.*;
 import javax.swing.filechooser.*;
+import java.io.*;
+//import java.net.MalformedURLException;
+import java.net.URL;
+import java.io.File;
+
 
 public class two {
 
@@ -15,8 +23,22 @@ public class two {
 	private JTextField textField;
 	private JTextField textField_1;
 	public JLabel ImageLabel; //�׸��� �ҷ��� Label
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
+
+	JRadioButton GifRadio;
+	JRadioButton PngRadio;
+	JRadioButton BmpRadio;
+	JRadioButton JpgRadio;
+	JRadioButton JpegRadio;
+	String form ;
+	public JPanel Pn;
+	ImageIcon icon; //불러온 사진의 값을 갖는 함수
+	String filePath ;
+	//Image image;
+	
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
 			public void run() {
 				try {
 					two window = new two();
@@ -25,7 +47,8 @@ public class two {
 					e.printStackTrace();
 				}
 			}
-		});
+		}
+		);
 	}
 
 
@@ -34,7 +57,7 @@ public class two {
 		initialize();
 	}
 
-	private void initialize() {
+	public void initialize() {
 		frmWansikcam = new JFrame();
 		frmWansikcam.setTitle("Wansikcam");
 		frmWansikcam.setBounds(100, 100, 1002, 729);
@@ -276,44 +299,105 @@ public class two {
 		SizesetBut.setBounds(313, 401, 97, 23);
 		setpanel1.add(SizesetBut);
 		
+//////////////희정/////////////////////////////////////////////////////////
+		
 		JLabel FormLabel = new JLabel("포멧 변경");
 		FormLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		FormLabel.setBounds(30, 440, 57, 15);
 		setpanel1.add(FormLabel);
 		
-		JRadioButton JpegRadio = new JRadioButton("JPEG");
+		ButtonGroup formg = new ButtonGroup();
+		
+		JpegRadio = new JRadioButton("JPEG");
 		JpegRadio.setBackground(Color.WHITE);
 		JpegRadio.setBounds(40, 464, 87, 23);
 		setpanel1.add(JpegRadio);
 		
-		JRadioButton JpgRadio = new JRadioButton("JPG");
+		JpgRadio = new JRadioButton("JPG");
 		JpgRadio.setBackground(Color.WHITE);
 		JpgRadio.setBounds(174, 464, 87, 23);
 		setpanel1.add(JpgRadio);
 		
-		JRadioButton BmpRadio = new JRadioButton("BMP");
+		BmpRadio = new JRadioButton("BMP");
 		BmpRadio.setBackground(Color.WHITE);
 		BmpRadio.setBounds(313, 464, 80, 23);
 		setpanel1.add(BmpRadio);
+		BmpRadio.addItemListener(new MyItemListener());
 		
-		JRadioButton PngRadio = new JRadioButton("PNG");
+		PngRadio = new JRadioButton("PNG");
 		PngRadio.setBackground(Color.WHITE);
 		PngRadio.setBounds(40, 495, 87, 23);
 		setpanel1.add(PngRadio);
 		
-		JRadioButton GifRadio = new JRadioButton("GIF");
+		GifRadio = new JRadioButton("GIF");
 		GifRadio.setBackground(Color.WHITE);
 		GifRadio.setBounds(174, 495, 87, 23);
 		setpanel1.add(GifRadio);
 		
+		formg.add(GifRadio);
+		formg.add(PngRadio);
+		formg.add(BmpRadio);
+		formg.add(JpgRadio);
+		formg.add(JpegRadio);		
+		GifRadio.addItemListener(new MyItemListener());
+		PngRadio.addItemListener(new MyItemListener());
+		BmpRadio.addItemListener(new MyItemListener());
+		JpgRadio.addItemListener(new MyItemListener());
+		JpegRadio.addItemListener(new MyItemListener());
+		
+		  	if(GifRadio.isSelected())
+				form = "gif";
+			else if(PngRadio.isSelected())
+				form = "png";
+			else if(BmpRadio.isSelected())
+				form = "bmp";
+			else if(JpgRadio.isSelected())
+				form = "jpg";
+			else if(JpegRadio.isSelected())
+				form = "jpeg";
+		  	
 		JButton FormsetBut = new JButton("적용");
 		FormsetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FormsetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
+				System.out.println("체크 버튼 : "+form);
+				//파일명 자르기
+				String fileNm = filePath.substring(0,filePath.lastIndexOf("."));
+				System.out.println(fileNm+"체크버튼");
+				
+				BufferedImage image = null;
+				try {
+					image = ImageIO.read(new File(filePath));
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				//BufferedImage newImage = new BufferedImage(image.getWidth(),image.getHeight(), BufferedImage.TYPE_INT_BGR);
+							
+			  	try {
+			  		if(form =="gif")
+						ImageIO.write(image, "gif", new File(fileNm+"_copy.gif"));
+				else if(form == "png")
+			  		ImageIO.write(image, "png", new File(fileNm+"_copy.png"));
+				else if(form == "bmp")
+			  		ImageIO.write(image, "bmp", new File(fileNm+"_copy.bmp"));
+				else if(form == "jpg")
+			  		ImageIO.write(image, "jpg", new File(fileNm+"_copy.jpg"));
+				else if(form == "jpeg")
+			  		ImageIO.write(image, "jpeg", new File(fileNm+"_copy.jpeg"));
+			  	} 
+			  	catch (IOException e1) 
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		FormsetBut.setBounds(313, 495, 97, 23);
 		setpanel1.add(FormsetBut);
+		
+/////////////////////////////////////////////////////////////////////////////
 		
 		JLabel CutLabel = new JLabel("자르기");
 		CutLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
@@ -323,7 +407,8 @@ public class two {
 		JButton CutBut = new JButton("자르기");
 		CutBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		CutBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
 			}
 		});
 		CutBut.setBounds(40, 556, 97, 23);
@@ -332,7 +417,10 @@ public class two {
 		JButton ResetBut = new JButton("원본 되돌리기");
 		ResetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		ResetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
+				System.out.println("원본 되돌리기");
+				ImageLabel.setIcon(icon);
 			}
 		});
 		ResetBut.setBounds(283, 601, 127, 23);
@@ -359,33 +447,71 @@ public class two {
 		
 		JMenu mnNewMenu_1 = new JMenu("New menu");
 		menuBar.add(mnNewMenu_1);
+		
+		//windows.setVisible(true);
 	}
 	
-	//���� - MenuBarEvent
-	class OpenActionListener implements ActionListener
-	{
+	//희정 - 포멧변경
+	class MyItemListener implements ItemListener
+	{		
+/*
+	formg.add(GifRadio);
+	formg.add(PngRadio);
+	formg.add(BmpRadio);
+	formg.add(JpgRadio);
+	formg.add(JpegRadio);	
+*/
+		public void itemStateChanged(ItemEvent e) 
+		{		
+			if (e.getStateChange() == ItemEvent.DESELECTED)
+				return;
+			if(GifRadio.isSelected())
+				form = "gif";
+			else if(PngRadio.isSelected())
+				form = "png";
+			else if(BmpRadio.isSelected())
+				form = "bmp";
+			else if(JpgRadio.isSelected())
+				form = "jpg";
+			else if(JpegRadio.isSelected())
+				form = "jpeg";	
+		}
+	}
+	//희정- MenuBarEvent
+	class OpenActionListener implements ActionListener {
 		JFileChooser chooser;
-		
-		OpenActionListener()
-		{
+
+		OpenActionListener() {
 			chooser = new JFileChooser();
 		}
 
-		public void actionPerformed(ActionEvent e) 
-		{
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Images","jpg","gif","jpeg","png","bmp");
+		public void actionPerformed(ActionEvent e) {
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					"Images", "jpg", "gif", "jpeg", "png", "bmp");
 			chooser.setFileFilter(filter);
 			int ret = chooser.showOpenDialog(null);
-			if(ret != JFileChooser.APPROVE_OPTION)
-			{
-				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
+			if (ret != JFileChooser.APPROVE_OPTION) {
+				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.", "경고",
+						JOptionPane.WARNING_MESSAGE);
 				return;
 			}
+
+			filePath = chooser.getSelectedFile().getPath();
 			
-			//����ڰ� ������ �����ϰ� "����"��ư�� ���� ���
-			String filePath = chooser.getSelectedFile().getPath();
-			ImageLabel.setIcon(new ImageIcon(filePath));
+			System.out.println(chooser.getSelectedFile()+" 불러오기");
+			System.out.println(filePath+"불러오기");
+			/*
+			try {
+				Image image = ImageIO.read(new File(filePath));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	*/
+			icon = new ImageIcon(filePath);
+			ImageLabel.setIcon(icon);
 			
 		}
 	}
+	
 }
