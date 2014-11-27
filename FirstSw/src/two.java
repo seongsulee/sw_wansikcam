@@ -14,16 +14,30 @@ import java.io.*;
 //import java.net.MalformedURLException;
 import java.net.URL;
 import java.io.File;
-
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+import java.awt.image.LookupOp;
+import java.awt.image.ByteLookupTable;
+import java.awt.image.BandCombineOp;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ByteLookupTable;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+import java.awt.image.LookupOp;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 
 public class two {
+	//  private MyFilter colorFilter = new ColorFilter();
 
 	private JFrame frmWansikcam;
 	private JTextField RotauserText;
 	private JTextField textField;
 	private JTextField textField_1;
 	public JLabel ImageLabel; //�׸��� �ҷ��� Label
-
+	
 	JRadioButton GifRadio;
 	JRadioButton PngRadio;
 	JRadioButton BmpRadio;
@@ -33,7 +47,8 @@ public class two {
 	public JPanel Pn;
 	ImageIcon icon; //불러온 사진의 값을 갖는 함수
 	String filePath ;
-	//Image image;
+	Image origin;
+	BufferedImage temp =null;
 	
 	public static void main(String[] args) 
 	{
@@ -170,32 +185,91 @@ public class two {
 		FilterLabel.setBounds(20, 95, 67, 15);
 		setpanel1.add(FilterLabel);
 		
-		JButton FilterBrackBut = new JButton("흑백");
-		FilterBrackBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FilterBrackBut.setBounds(30, 125, 97, 23);
-		setpanel1.add(FilterBrackBut);
+		JButton FilterBlackBut = new JButton("흑백");
+		FilterBlackBut.setFont(new Font("굴림", Font.PLAIN, 12));
+		FilterBlackBut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("흑백");
+			}
+		});
+		FilterBlackBut.setBounds(30, 125, 97, 23);
+		setpanel1.add(FilterBlackBut);
 		
 		JButton FilterBlurBut = new JButton("흐림");
 		FilterBlurBut.setFont(new Font("굴림", Font.PLAIN, 12));
+		FilterBlurBut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("흐림");
+				temp = blurFilter(temp);
+				ImageIcon tempIcon = new ImageIcon(temp);
+				ImageLabel.setIcon(tempIcon);
+			}
+
+			private BufferedImage blurFilter(BufferedImage temp) 
+			{
+				float[] blurMatrix = { 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f,
+						1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f,
+						1.0f / 9.0f, 1.0f / 9.0f };
+				BufferedImageOp blurFilter = new ConvolveOp(new Kernel(3, 3,
+						blurMatrix), ConvolveOp.EDGE_NO_OP, null);
+				return blurFilter.filter(temp, null);
+			}
+	
+		});
 		FilterBlurBut.setBounds(174, 125, 97, 23);
 		setpanel1.add(FilterBlurBut);
 		
 		JButton FilterSepBut = new JButton("세피아");
 		FilterSepBut.setFont(new Font("굴림", Font.PLAIN, 12));
+		FilterSepBut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("세피아");
+			}
+		});
 		FilterSepBut.setBounds(313, 125, 97, 23);
 		setpanel1.add(FilterSepBut);
 		
 		JButton FilterSharBut = new JButton("선명");
 		FilterSharBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterSharBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) 
+			{
+				System.out.println("선명");
+				temp = sharpenFilter(temp);
+				ImageIcon tempIcon = new ImageIcon(temp);
+				ImageLabel.setIcon(tempIcon);
+				
 			}
+
+			private BufferedImage sharpenFilter(BufferedImage temp) {
+				float[] sharpenMatrix = { 0.0f, -1.0f, 0.0f, -1.0f, 5.0f,
+						-1.0f, 0.0f, -1.0f, 0.0f };
+				BufferedImageOp sharpenFilter = new ConvolveOp(new Kernel(3, 3,
+						sharpenMatrix), ConvolveOp.EDGE_NO_OP, null);
+				return sharpenFilter.filter(temp, null);
+			}
+			
 		});
 		FilterSharBut.setBounds(30, 158, 97, 23);
 		setpanel1.add(FilterSharBut);
 		
 		JButton FilterRevBut = new JButton("반전");
 		FilterRevBut.setFont(new Font("굴림", Font.PLAIN, 12));
+		FilterRevBut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("반전");
+				temp = invertFilter(temp);
+				ImageIcon tempIcon = new ImageIcon(temp);
+				ImageLabel.setIcon(tempIcon);
+			}
+			private BufferedImage invertFilter(BufferedImage temp) {
+				byte[] invertArray = new byte[256];
+			    for (int counter = 0; counter < 256; counter++)
+			      invertArray[counter] = (byte) (255 - counter);
+			    BufferedImageOp invertFilter = new LookupOp(new ByteLookupTable(0, invertArray), null);
+			    return invertFilter.filter(temp, null);
+			}
+		});
 		FilterRevBut.setBounds(174, 158, 97, 23);
 		setpanel1.add(FilterRevBut);
 		
@@ -204,7 +278,7 @@ public class two {
 		TransLabel.setBounds(20, 201, 67, 15);
 		setpanel1.add(TransLabel);
 		
-		JRadioButton RotacwRadio = new JRadioButton("시계 방향"); //RotaRadio = �ð���� ��ư
+		JRadioButton RotacwRadio = new JRadioButton("시계 방향");
 		RotacwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotacwRadio.setBackground(Color.WHITE);
 		RotacwRadio.setBounds(30, 254, 121, 23);
@@ -372,20 +446,9 @@ public class two {
 				} catch (IOException e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
-				}
-				//BufferedImage newImage = new BufferedImage(image.getWidth(),image.getHeight(), BufferedImage.TYPE_INT_BGR);
-							
+				}		
 			  	try {
-			  		if(form =="gif")
-						ImageIO.write(image, "gif", new File(fileNm+"_copy.gif"));
-				else if(form == "png")
-			  		ImageIO.write(image, "png", new File(fileNm+"_copy.png"));
-				else if(form == "bmp")
-			  		ImageIO.write(image, "bmp", new File(fileNm+"_copy.bmp"));
-				else if(form == "jpg")
-			  		ImageIO.write(image, "jpg", new File(fileNm+"_copy.jpg"));
-				else if(form == "jpeg")
-			  		ImageIO.write(image, "jpeg", new File(fileNm+"_copy.jpeg"));
+						ImageIO.write(image, form, new File(fileNm+"_copy."+form));
 			  	} 
 			  	catch (IOException e1) 
 				{
@@ -436,10 +499,13 @@ public class two {
 		
 		JMenu FileMenu = new JMenu("File");		
 		JMenuItem openItem = new JMenuItem("Open");
-		
+		JMenuItem saveItem = new JMenuItem("Save");
+
 		//Open ActionListener
 		openItem.addActionListener(new OpenActionListener());
+		saveItem.addActionListener(new SaveActionListener());
 		FileMenu.add(openItem);
+		FileMenu.add(saveItem);
 		
 		menuBar.add(FileMenu);
 		//this.setJMenuBar(menuBar);
@@ -447,20 +513,11 @@ public class two {
 		
 		JMenu mnNewMenu_1 = new JMenu("New menu");
 		menuBar.add(mnNewMenu_1);
-		
-		//windows.setVisible(true);
 	}
 	
 	//희정 - 포멧변경
 	class MyItemListener implements ItemListener
 	{		
-/*
-	formg.add(GifRadio);
-	formg.add(PngRadio);
-	formg.add(BmpRadio);
-	formg.add(JpgRadio);
-	formg.add(JpegRadio);	
-*/
 		public void itemStateChanged(ItemEvent e) 
 		{		
 			if (e.getStateChange() == ItemEvent.DESELECTED)
@@ -478,40 +535,65 @@ public class two {
 		}
 	}
 	//희정- MenuBarEvent
-	class OpenActionListener implements ActionListener {
+	class OpenActionListener implements ActionListener 
+	{
+		
 		JFileChooser chooser;
 
-		OpenActionListener() {
+		OpenActionListener() 
+		{
 			chooser = new JFileChooser();
 		}
 
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) 
+		{
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
 					"Images", "jpg", "gif", "jpeg", "png", "bmp");
 			chooser.setFileFilter(filter);
 			int ret = chooser.showOpenDialog(null);
 			if (ret != JFileChooser.APPROVE_OPTION) {
-				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.", "경고",
-						JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.",
+						"경고", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-
 			filePath = chooser.getSelectedFile().getPath();
 			
-			System.out.println(chooser.getSelectedFile()+" 불러오기");
-			System.out.println(filePath+"불러오기");
-			/*
-			try {
-				Image image = ImageIO.read(new File(filePath));
+			try 
+			{
+				temp = ImageIO.read(new File(filePath));
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-	*/
+            // 그 위에 덮씌울 이미지를 불러온다.
 			icon = new ImageIcon(filePath);
 			ImageLabel.setIcon(icon);
 			
 		}
+			
 	}
-	
+	class SaveActionListener implements ActionListener 
+	{
+		
+		JFileChooser chooser;
+
+		SaveActionListener() 
+		{
+			chooser = new JFileChooser();
+		}
+
+		public void actionPerformed(ActionEvent e) 
+		{
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					"Images", "jpg", "gif", "jpeg", "png", "bmp");
+			chooser.setFileFilter(filter);
+			
+			int ret = chooser.showSaveDialog(null);
+			if (ret != JFileChooser.APPROVE_OPTION) 
+			{
+				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.",
+						"경고", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+		}	
+	}
 }
