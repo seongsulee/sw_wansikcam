@@ -190,19 +190,26 @@ public class two {
 		setpanel1.add(FilterLabel);
 		
 		JButton FiltergrayBut = new JButton("그레이");
-		FiltergrayBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FiltergrayBut.addActionListener(new ActionListener() {
+        FiltergrayBut.setFont(new Font("굴림", Font.PLAIN, 12));
+        FiltergrayBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				temp = new BufferedImage(temp.getWidth(), temp.getHeight(),
-						temp.TYPE_BYTE_GRAY);
-				Graphics g = temp.getGraphics();
-				g.drawImage(temp, 0, 0, null);
-				g.dispose();
-				ImageIcon tempIcon = new ImageIcon(temp);
-				ImageLabel.setIcon(tempIcon);
+				try {
+					BufferedImage Origin = ImageIO.read(new File(filePath));
+					temp = new BufferedImage(icon.getIconWidth(), icon
+							.getIconHeight(), BufferedImage.TYPE_BYTE_GRAY);
+					Graphics2D g2 = temp.createGraphics();
+					g2.drawImage(Origin, null, 0, 0);
+					g2.dispose();
+					ImageIcon tempIcon = new ImageIcon(temp);
+					ImageLabel.setIcon(tempIcon);
+				} catch (IOException ioe) {
+					ioe.printStackTrace();
+				}
 			}
-
 		});
+        FiltergrayBut.setBounds(30, 125, 97, 23);
+        setpanel1.add(FiltergrayBut);
+
 		
 		FiltergrayBut.setBounds(30, 125, 97, 23);
 		setpanel1.add(FiltergrayBut);
@@ -519,7 +526,6 @@ public class two {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println("원본 되돌리기");
 				ImageLabel.setIcon(icon);
 			}
 		});
