@@ -1,41 +1,238 @@
+﻿import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Window;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.RescaleOp;
+import java.awt.image.LookupOp;
+import java.awt.image.ShortLookupTable;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.event.*;
-import javax.swing.filechooser.*;
-
-
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ImSWproject {
 
+	int count = 0;
+	
 	private JFrame frmWansikcam;
 	private JTextField RotauserText;
 	private JTextField textField;
 	private JTextField textField_1;
 	public JLabel ImageLabel; // ????? ????? Label
 	public JPanel Pn;
-	ImageIcon icon; //불러온 사진의 값을 갖는 함수
+	static ImageIcon icon; //불러온 사진의 값을 갖는 함수
+	JSlider Brightslider;
+	JLabel BrightvalueLabel;//0 라벨
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ImSWproject window = new ImSWproject();
-					window.frmWansikcam.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	/*
+	private static final short[] invertTable;
+
+	static
+	{
+		invertTable = new short[256];
+		for(int i = 0; i<256; i++)
+		{
+			invertTable[i] = (short)(255-i);
+		}
 	}
+	*/
+	
 
 	public ImSWproject() {
 		initialize();
+	}
+	
+	
+	public void BrightImage(float Value)
+	{
+		Image BrIm = icon.getImage();
+		
+		// Image -> BufferedImage 변환
+	    BufferedImage bIm = new BufferedImage
+	            (BrIm.getWidth(null), BrIm.getHeight(null), BufferedImage.TYPE_INT_RGB);
+	    bIm.getGraphics().drawImage(BrIm, 0, 0, null);
+	    
+	    float scaleFactor = (float) (1.0 + (Value / 120.0));
+	    RescaleOp op = new RescaleOp(scaleFactor, 0, null);
+	    bIm = op.filter(bIm, null);
+	    Image cutIm = Toolkit.getDefaultToolkit().createImage(bIm.getSource());
+	    ImageIcon reicon = new ImageIcon(cutIm);
+	    ImageLabel.setIcon(reicon);
+
+	}
+	 
+	
+    /**
+ * This method reads an image from the file
+ * @param fileLocation -- > eg. "C:/testImage.jpg"
+ * @return BufferedImage of the file read
+ */
+    public BufferedImage readImage(String fileLocation) 
+    {
+        BufferedImage img = null;
+        try 
+        {
+            img = ImageIO.read(new File(fileLocation));
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
+ 
+        return img;
+ 
+    }
+ 
+    /**
+ * This method writes a buffered image to a file
+ * @param img -- > BufferedImage
+ * @param fileLocation --> e.g. "C:/testImage.jpg"
+ * @param extension --> e.g. "jpg","gif","png"
+ */
+public void writeImage(BufferedImage img, String fileLocation,
+        String extension) {
+    try {
+        BufferedImage bi = img;
+        File outputfile = new File(fileLocation);
+        ImageIO.write(bi, extension, outputfile);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+public BufferedImage horizontalflip(BufferedImage img) {
+    int w = img.getWidth();
+    int h = img.getHeight();
+    BufferedImage dimg = new BufferedImage(w, h, img.getType());
+    Graphics2D g = dimg.createGraphics();
+    /**
+     * img - the specified image to be drawn. This method does nothing if
+     * img is null. dx1 - the x coordinate of the first corner of the
+     * destination rectangle. dy1 - the y coordinate of the first corner of
+     * the destination rectangle. dx2 - the x coordinate of the second
+     * corner of the destination rectangle. dy2 - the y coordinate of the
+     * second corner of the destination rectangle. sx1 - the x coordinate of
+     * the first corner of the source rectangle. sy1 - the y coordinate of
+     * the first corner of the source rectangle. sx2 - the x coordinate of
+     * the second corner of the source rectangle. sy2 - the y coordinate of
+     * the second corner of the source rectangle. observer - object to be
+     * notified as more of the image is scaled and converted.
+     *
+     */
+        g.drawImage(img, 0, 0, w, h, w, 0, 0, h, null);
+        g.dispose();
+        return dimg;
+    }
+ 
+    /**
+ * This method flips the image vertically
+ * @param img --> BufferedImage object to be flipped
+ * @return
+ */
+    public BufferedImage verticalflip(BufferedImage img) 
+    {
+        int w = img.getWidth();
+        int h = img.getHeight();
+        BufferedImage dimg = new BufferedImage(w, h, img.getColorModel()
+                .getTransparency());
+        Graphics2D g = dimg.createGraphics();
+        g.drawImage(img, 0, 0, w, h, 0, h, w, 0, null);
+        g.dispose();
+        return dimg;
+    }
+    
+    public void VerticalFlipImage()
+    {
+    	Image BrIm = icon.getImage();
+		
+		// Image -> BufferedImage 변환
+	    BufferedImage bIm = new BufferedImage(BrIm.getWidth(null), BrIm.getHeight(null), BufferedImage.TYPE_INT_RGB);
+	    bIm.getGraphics().drawImage(BrIm, 0, 0, null);
+	    /*
+		String inputImageLocation = "C:\\Users\\Y\\workspace\\Wansikcam_Filter\\src\\123.jpg";
+        String outputImageLocationHF = "C:\\Users\\Y\\workspace\\Wansikcam_Filter\\src\\myImageHorizontalFlip.jpg";
+        String outputImageLocationVF = "C:\\Users\\Y\\workspace\\Wansikcam_Filter\\src\\myImageVerticalFlip.jpg";
+        String extension = "jpg";
+	     */
+        ImSWproject flipper = new ImSWproject();
+ 
+        /**
+         * Reading image from the file
+         */
+        /*
+        System.out.println("Reading Image From :" + inputImageLocation);
+        BufferedImage inputImage = flipper.readImage(inputImageLocation);
+        BufferedImage img = inputImage;
+        */
+                
+        //상하 반전
+        bIm = flipper.verticalflip(bIm);
+        //flipper.writeImage(img, outputImageLocationVF, extension);
+        
+        ImageIcon reicon = new ImageIcon(bIm);
+	    ImageLabel.setIcon(reicon);
+    }
+    
+    public void HorizontalGlipImage()
+    {
+    	Image BrIm = icon.getImage();
+		
+		// Image -> BufferedImage 변환
+	    BufferedImage bIm = new BufferedImage(BrIm.getWidth(null), BrIm.getHeight(null), BufferedImage.TYPE_INT_RGB);
+	    bIm.getGraphics().drawImage(BrIm, 0, 0, null);
+	    /*
+		String inputImageLocation = "C:\\Users\\Y\\workspace\\Wansikcam_Filter\\src\\123.jpg";
+        String outputImageLocationHF = "C:\\Users\\Y\\workspace\\Wansikcam_Filter\\src\\myImageHorizontalFlip.jpg";
+        String outputImageLocationVF = "C:\\Users\\Y\\workspace\\Wansikcam_Filter\\src\\myImageVerticalFlip.jpg";
+        String extension = "jpg";
+	     */
+        ImSWproject flipper = new ImSWproject();
+ 
+        /**
+         * Reading image from the file
+         */
+        /*
+        System.out.println("Reading Image From :" + inputImageLocation);
+        BufferedImage inputImage = flipper.readImage(inputImageLocation);
+        BufferedImage img = inputImage;
+        */
+        //좌우 반전
+        bIm = flipper.horizontalflip(bIm);
+        //flipper.writeImage(bIm, outputImageLocationHF, extension);
+        
+        ImageIcon reicon = new ImageIcon(bIm);
+	    ImageLabel.setIcon(reicon);
+    }
+	
+    
+	private int checkColorRange(int i) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	private void initialize() {
@@ -119,32 +316,43 @@ public class ImSWproject {
 		BrightLabel.setBounds(20, 20, 67, 15);
 		setpanel1.add(BrightLabel);
 
-		JSlider Brightslider = new JSlider();
-		Brightslider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-			}
-		});
-		Brightslider.setValue(0);
-		Brightslider.setMinimum(-50);
-		Brightslider.setMaximum(50);
-		Brightslider.setBackground(Color.WHITE);
-		Brightslider.setBounds(30, 50, 231, 23);
-		setpanel1.add(Brightslider);
-
-		JLabel BrightvalueLabel = new JLabel("0");
+		BrightvalueLabel = new JLabel("0");//0 라벨
 		BrightvalueLabel.setFont(new Font("굴림", Font.PLAIN, 12));
 		BrightvalueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		BrightvalueLabel.setBounds(273, 53, 45, 15);
 		setpanel1.add(BrightvalueLabel);
 
-		JButton BirightsetBut = new JButton("적용");
+		Brightslider = new JSlider();
+		Brightslider.addChangeListener(new ChangeListener() 
+		{
+			public void stateChanged(ChangeEvent arg0) 
+			{
+				int Value = Brightslider.getValue();
+				BrightvalueLabel.setText(Value+"");
+			}
+		});
+
+		Brightslider.setValue(0);
+		Brightslider.setMinimum(-100);
+		Brightslider.setMaximum(100);
+		Brightslider.setBackground(Color.WHITE);
+		Brightslider.setBounds(30, 50, 231, 23);
+		setpanel1.add(Brightslider);
+
+
+		JButton BirightsetBut = new JButton("적용");//적용버튼
 		BirightsetBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		BirightsetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		BirightsetBut.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				float value = (float)Brightslider.getValue();
+				BrightImage(value);
 			}
 		});
 		BirightsetBut.setBounds(330, 50, 80, 23);
 		setpanel1.add(BirightsetBut);
+
 
 		JLabel FilterLabel = new JLabel("필터 효과");
 		FilterLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
@@ -155,12 +363,13 @@ public class ImSWproject {
 		FilterBrackBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterBrackBut.setBounds(30, 125, 97, 23);
 		setpanel1.add(FilterBrackBut);
-
+		
+		    
 		JButton FilterBlurBut = new JButton("흐림");
 		FilterBlurBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterBlurBut.setBounds(174, 125, 97, 23);
 		setpanel1.add(FilterBlurBut);
-
+		
 		JButton FilterSepBut = new JButton("세피아");
 		FilterSepBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterSepBut.setBounds(313, 125, 97, 23);
@@ -186,7 +395,7 @@ public class ImSWproject {
 		setpanel1.add(TransLabel);
 
 		JRadioButton RotacwRadio = new JRadioButton("시계 방향"); // RotaRadio =
-																// ?ð???? ???
+		// ?ð???? ???
 		RotacwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotacwRadio.setBackground(Color.WHITE);
 		RotacwRadio.setBounds(30, 254, 121, 23);
@@ -231,8 +440,11 @@ public class ImSWproject {
 
 		JButton RevRLBut = new JButton("좌우 반전");
 		RevRLBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		RevRLBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		RevRLBut.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				HorizontalGlipImage();
 			}
 		});
 		RevRLBut.setBounds(78, 345, 97, 23);
@@ -240,8 +452,11 @@ public class ImSWproject {
 
 		JButton RevTBBut = new JButton("상하 반전");
 		RevTBBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		RevTBBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		RevTBBut.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				VerticalFlipImage();		        
 			}
 		});
 		RevTBBut.setBounds(252, 345, 97, 23);
@@ -261,21 +476,21 @@ public class ImSWproject {
 		textField.setBounds(85, 404, 80, 16);
 		textField.setColumns(10);
 		textField.addKeyListener(new KeyListener()//KeyListener 리스너 구현
-         {
-             public void keyTyped(KeyEvent e) //Key 이벤트가 발생했을 시
-             {  
-                 char c = e.getKeyChar();//받아들인 값을 c에 저장
-                 if(!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)|| (c == KeyEvent.VK_ENTER)))
-                 {//만약 눌러진 키가 백스페이스, 델리트, 엔터키가 아닐시
-                 	JOptionPane.showMessageDialog(null, ""+c+"는 숫자 키가 아닙니다.\n숫자를 입력하세요.", "경고", JOptionPane.ERROR_MESSAGE);// 경고창 발생
-                 	e.consume();//눌러진키는 사라지게 설정
-                 }
-             }
-             public void keyPressed(KeyEvent ke) {}
-             public void keyReleased(KeyEvent ke) {}
-         });
+		{
+			public void keyTyped(KeyEvent e) //Key 이벤트가 발생했을 시
+			{  
+				char c = e.getKeyChar();//받아들인 값을 c에 저장
+				if(!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)|| (c == KeyEvent.VK_ENTER)))
+				{//만약 눌러진 키가 백스페이스, 델리트, 엔터키가 아닐시
+					JOptionPane.showMessageDialog(null, ""+c+"는 숫자 키가 아닙니다.\n숫자를 입력하세요.", "경고", JOptionPane.ERROR_MESSAGE);// 경고창 발생
+					e.consume();//눌러진키는 사라지게 설정
+				}
+			}
+			public void keyPressed(KeyEvent ke) {}
+			public void keyReleased(KeyEvent ke) {}
+		});
 		setpanel1.add(textField);
-		
+
 		JLabel SizeYLabel = new JLabel("세로 :");
 		SizeYLabel.setFont(new Font("굴림", Font.PLAIN, 12));
 		SizeYLabel.setBounds(181, 405, 40, 15);
@@ -284,24 +499,24 @@ public class ImSWproject {
 		textField_1 = new JTextField();
 		textField_1.setBounds(225, 404, 80, 16);
 		textField_1.setColumns(10);
-		
+
 		textField_1.addKeyListener(new KeyListener()//KeyListener 리스너 구현
-        {
-            public void keyTyped(KeyEvent e) //Key 이벤트가 발생했을 시
-            {  
-                char c = e.getKeyChar();//받아들인 값을 c에 저장
-                if(!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)|| (c == KeyEvent.VK_ENTER)))
-                {//만약 눌러진 키가 백스페이스, 델리트, 엔터키가 아닐시
-                	JOptionPane.showMessageDialog(null, ""+c+"는 숫자 키가 아닙니다.\n숫자를 입력하세요.", "경고", JOptionPane.ERROR_MESSAGE);// 경고창 발생
-                	e.consume();//눌러진키는 사라지게 설정
-                }
-            }
-            public void keyPressed(KeyEvent ke) {}
-            public void keyReleased(KeyEvent ke) {}
-        });
+		{
+			public void keyTyped(KeyEvent e) //Key 이벤트가 발생했을 시
+			{  
+				char c = e.getKeyChar();//받아들인 값을 c에 저장
+				if(!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE)|| (c == KeyEvent.VK_ENTER)))
+				{//만약 눌러진 키가 백스페이스, 델리트, 엔터키가 아닐시
+					JOptionPane.showMessageDialog(null, ""+c+"는 숫자 키가 아닙니다.\n숫자를 입력하세요.", "경고", JOptionPane.ERROR_MESSAGE);// 경고창 발생
+					e.consume();//눌러진키는 사라지게 설정
+				}
+			}
+			public void keyPressed(KeyEvent ke) {}
+			public void keyReleased(KeyEvent ke) {}
+		});
 		setpanel1.add(textField_1);
-		
-		
+
+
 		JButton SizesetBut = new JButton("적용");
 		SizesetBut.setFont(new Font("굴림", Font.PLAIN, 12));
 
@@ -311,7 +526,7 @@ public class ImSWproject {
 				String str_1 = textField_1.getText();
 				int int_str = 0;
 				int int_str_1 = 0;
-				
+
 				if (icon == null) {
 					JOptionPane.showMessageDialog(null, "사진이 선택되지 않았습니다.",
 							"경고", JOptionPane.WARNING_MESSAGE);
@@ -341,15 +556,15 @@ public class ImSWproject {
 							"경고", JOptionPane.WARNING_MESSAGE);
 					return;
 				} 
-				
-					int width = Integer.parseInt(str);
-					int length = Integer.parseInt(str_1);
 
-					ImageIcon icon2 = icon;
-					Image im = icon2.getImage();
-					Image resize = im.getScaledInstance(width, length, java.awt.Image.SCALE_SMOOTH);
-					ImageIcon reicon = new ImageIcon(resize);
-					ImageLabel.setIcon(reicon);
+				int width = Integer.parseInt(str);
+				int length = Integer.parseInt(str_1);
+
+				ImageIcon icon2 = icon;
+				Image im = icon2.getImage();
+				Image resize = im.getScaledInstance(width, length, java.awt.Image.SCALE_SMOOTH);
+				ImageIcon reicon = new ImageIcon(resize);
+				ImageLabel.setIcon(reicon);
 			}
 		});
 
@@ -423,7 +638,7 @@ public class ImSWproject {
 		ImageLabel.setBackground(Color.WHITE);
 		ImageLabel.setBounds(12, 10, 512, 512);
 		frmWansikcam.getContentPane().add(ImageLabel);
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		frmWansikcam.setJMenuBar(menuBar);
 
@@ -468,16 +683,36 @@ public class ImSWproject {
 			// im.getScaledInstance(100,1000,java.awt.Image.SCALE_SMOOTH);
 			// ImageIcon reicon = new ImageIcon(resize);
 			//ImageLabel.setIcon(icon);
-			
+
 			ImageLabel.setIcon(icon);
 			//Pn.add(ImageLabel);
 			//ImageLabel.setLocation(icon, 10);
-			
-			
-//			ImageLabel.setIcon(icon);
-//			label = new JLabel(icon, JLabel.CENTER);
-//			ImageLabel.add(label);
-			
+
+
+			//			ImageLabel.setIcon(icon);
+			//			label = new JLabel(icon, JLabel.CENTER);
+			//			ImageLabel.add(label);
+
 		}
+
+
+	}
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
+					ImSWproject window = new ImSWproject();
+					window.frmWansikcam.setVisible(true);
+				} 
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
