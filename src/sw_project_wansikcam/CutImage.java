@@ -9,7 +9,21 @@ import javax.swing.ImageIcon;
 public class CutImage {
 	// 전역필드로 마우스 좌표값, 자르기 가능여부 저장
 	public boolean cutInable = false;
-	private int x, y, x_, y_;
+	public int x, y, x_, y_;
+	
+	public void setSize(int positionX, int positionY, int width, int height){
+		x = positionX;
+		y = positionY;
+		x_ = width;
+		y_ = height;
+	}
+	
+	public void printSize(){
+		System.out.println(x + " ");
+		System.out.println(y + " ");
+		System.out.println(x_ + " ");
+		System.out.println(x_ + " ");
+	}
 	
 	public ImageIcon cutImage(ImageIcon _icon){
 		Image img = _icon.getImage();

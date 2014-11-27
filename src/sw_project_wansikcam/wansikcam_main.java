@@ -1,6 +1,8 @@
 package sw_project_wansikcam;
 
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.Window;
 
 import javax.swing.*;
@@ -9,6 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
+import java.io.File;
 
 import javax.swing.event.*;
 import javax.swing.filechooser.*;
@@ -112,6 +115,84 @@ public class wansikcam_main {
 		AddBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		AddBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				JFileChooser chooser = new JFileChooser();
+				chooser.setMultiSelectionEnabled(true);
+				
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						"Images", "jpg", "gif", "jpeg", "png", "bmp");
+				chooser.setFileFilter(filter);
+				
+				int ret = chooser.showOpenDialog(null);
+				if (ret != JFileChooser.APPROVE_OPTION) {
+					JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.", "경고",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
+				// 여러개의 파일 선택
+				File[] fileList = chooser.getSelectedFiles();
+				ImageIcon[] iconArray = new ImageIcon[fileList.length];
+				
+				// 제일 작은 이미지를 찾아 크기를 저장
+				int minX = 100000;
+				int minY = 100000;
+				for(int i = 0; i < fileList.length; i++){
+					String filePath = fileList[i].getPath();
+					iconArray[i] = new ImageIcon(filePath);
+					int x = iconArray[i].getIconWidth();
+					int y = iconArray[i].getIconHeight();
+					if (x < minX){
+						minX = x;						
+					}
+					if(y < minY){
+						minY = y;
+					}
+				}
+				
+				// 제일 작은 이미지와 동일한 크기로 모든 이미지의 크기를 조정해준다
+				ImageIcon[] convIconArray = new ImageIcon[fileList.length];
+				cutImage.cutInable = true;
+				for(int i = 0; i < fileList.length; i++){
+					int width = iconArray[i].getIconWidth();
+					int height = iconArray[i].getIconHeight();
+					
+					// 이미지는 1/3지점부터 시작
+					int positionX = (int)width * 1/3;
+					int positionY = (int)height * 1/3;
+					
+					// 원본이미지 크기를 초과했다면 0에서부터 시작
+					if (positionX+minX > width){
+						positionX = 0;
+					}
+					if (positionY+minY > height){
+						positionY = 0;
+					}
+					cutImage.setSize(positionX, positionY, minX, minY);
+					convIconArray[i] = cutImage.cutImage(iconArray[i]);		
+				}
+				cutImage.cutInable = false;
+				
+				BufferedImage mergeImage = new BufferedImage(
+							minX*fileList.length, minY,	BufferedImage.TYPE_INT_RGB);
+				
+				Graphics2D graphics = (Graphics2D) mergeImage.getGraphics();
+				graphics.setBackground(Color.WHITE);
+				
+				for(int i = 0; i < fileList.length; i++){
+					Image img = convIconArray[i].getImage();
+					
+					// Image -> BufferedImage 변환
+					BufferedImage bIm = new BufferedImage
+							(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
+					bIm.getGraphics().drawImage(img, 0, 0, null);
+					
+					graphics.drawImage(bIm, minX*i, 0, null);
+				}
+				
+				Image mergeIm = Toolkit.getDefaultToolkit().createImage(mergeImage.getSource());
+				ImageIcon mergeIcon = new ImageIcon(mergeIm);
+				ImageLabel.setIcon(mergeIcon);
 			}
 		});
 		AddBut.setBounds(206, 91, 130, 23);
@@ -434,6 +515,8 @@ public class wansikcam_main {
 		ImageLabel.setOpaque(true);
 		ImageLabel.setBackground(Color.WHITE);
 		ImageLabel.setBounds(12, 10, 512, 512);
+		ImageLabel.setHorizontalAlignment(0);
+		ImageLabel.setVerticalAlignment(0);
 		ImageLabel.addMouseListener(new CutMouseListener());
 		frmWansikcam.getContentPane().add(ImageLabel);
 		
@@ -461,17 +544,21 @@ public class wansikcam_main {
 		
 		public void mouseReleased(MouseEvent e)
 		{
-			ImageIcon reicon = cutImage.mouseReleased(icon, e.getX(), e.getY());
-			ImageLabel.setIcon(reicon);
-			
-			// 제어변수 false
-			cutImage.cutInable = false;
+			if (icon != null){
+				ImageIcon reicon = cutImage.mouseReleased(icon, e.getX(), e.getY());
+				ImageLabel.setIcon(reicon);
+				
+				// 제어변수 false
+				cutImage.cutInable = false;
+			}
 		}
 		
 		public void mousePressed(MouseEvent e){
-			int width = icon.getIconWidth();
-			int hegiht = icon.getIconHeight();
-			cutImage.mousePress(width, hegiht, e.getX(), e.getY());
+			if (icon != null){
+				int width = icon.getIconWidth();
+				int hegiht = icon.getIconHeight();
+				cutImage.mousePress(width, hegiht, e.getX(), e.getY());
+			}
 		}
 		
 		public void mouseClicked(MouseEvent e){}
@@ -502,8 +589,7 @@ public class wansikcam_main {
 			String filePath = chooser.getSelectedFile().getPath();
 			icon = new ImageIcon(filePath);
 
-			ImageLabel.setHorizontalAlignment(0);
-			ImageLabel.setVerticalAlignment(0);
+			
 			ImageLabel.setIcon(icon);
 				
 			
