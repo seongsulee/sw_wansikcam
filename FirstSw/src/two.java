@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.event.*;
 import javax.swing.filechooser.*;
 
+import java.util.*;
+
 public class ImSWproject {
 
 	private JFrame frmWansikcam;
@@ -25,12 +27,13 @@ public class ImSWproject {
 	public JLabel ImageLabel4;
 	public JLabel ImageLabel5;
 	public JPanel Pn;
-	public ImageIcon reicon;
 	ImageIcon icon; // 불러온 사진의 값을 갖는 함수
 	int global_width;
 	int global_height;
 	String filePath;
-	ImageIcon icon3;
+	ImageIcon Deco_icon;
+	ImageIcon change_icon;
+	BufferedImage temp =null;
 	
 	public static void main(String[] args) {
 
@@ -121,14 +124,22 @@ public class ImSWproject {
 				}
 				else
 				{
-					if(icon3 != null)
+					if(Deco_icon != null)
 					{
-						System.out.println(icon3);
-						icon = icon3;
-						ImageLabel.setIcon(icon);
-						
-						//요기부터
-						filePath = ("images/3.jpg");
+						System.out.println(Deco_icon);
+						change_icon = Deco_icon;
+						Image img = change_icon.getImage();
+						BufferedImage bi = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_RGB);
+						Graphics2D g2 = bi.createGraphics();
+						g2.drawImage(img, 0, 0, null);
+						g2.dispose();
+						try {
+							ImageIO.write(bi, "png", new File("images/change_icon.png"));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						ImageLabel.setIcon(change_icon);
 					}
 				}
 				/*try {
@@ -231,10 +242,26 @@ public class ImSWproject {
 		FilterLabel.setBounds(20, 95, 67, 15);
 		setpanel1.add(FilterLabel);
 
-		JButton FilterBrackBut = new JButton("흑백");
-		FilterBrackBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FilterBrackBut.setBounds(30, 125, 97, 23);
-		setpanel1.add(FilterBrackBut);
+		JButton FiltergrayBut = new JButton("그레이");
+	      FiltergrayBut.setFont(new Font("굴림", Font.PLAIN, 12));
+	      FiltergrayBut.addActionListener(new ActionListener() {
+	         public void actionPerformed(ActionEvent arg0) {
+	        	 try{
+	        	BufferedImage Origin = ImageIO.read(new File(filePath));
+	        	temp = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_BYTE_GRAY);
+	            Graphics2D g2 = temp.createGraphics();
+	            g2.drawImage(Origin,null,0,0);
+	            g2.dispose();
+	            ImageIcon tempIcon = new ImageIcon(temp);
+	            ImageLabel.setIcon(tempIcon);
+	        	 }
+	        	 catch (IOException ioe) {
+						ioe.printStackTrace();
+					}
+	         }
+	      });
+	      FiltergrayBut.setBounds(30, 125, 97, 23);
+	      setpanel1.add(FiltergrayBut);
 
 		JButton FilterBlurBut = new JButton("흐림");
 		FilterBlurBut.setFont(new Font("굴림", Font.PLAIN, 12));
@@ -449,12 +476,35 @@ public class ImSWproject {
 				int width = Integer.parseInt(str);
 				int length = Integer.parseInt(str_1);
 
-				ImageIcon icon2 = icon;
-				Image im = icon2.getImage();
-				Image resize = im.getScaledInstance(width, length,
-						java.awt.Image.SCALE_SMOOTH);
-				ImageIcon reicon = new ImageIcon(resize);
-				ImageLabel.setIcon(reicon);
+				if(change_icon == null)
+				{
+					ImageIcon icon2 = icon;
+					Image im = icon2.getImage();
+					Image resize = im.getScaledInstance(width, length,
+							java.awt.Image.SCALE_SMOOTH);
+					change_icon = new ImageIcon(resize);
+				}
+				else
+				{
+					ImageIcon icon2 = change_icon;
+					Image im = icon2.getImage();
+					Image resize = im.getScaledInstance(width, length,
+							java.awt.Image.SCALE_SMOOTH);
+					change_icon = new ImageIcon(resize);
+				}
+
+				Image img = change_icon.getImage();
+				BufferedImage bi = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_RGB);
+				Graphics2D g2 = bi.createGraphics();
+				g2.drawImage(img, 0, 0, null);
+				g2.dispose();
+				try {
+					ImageIO.write(bi, "png", new File("images/change_icon.png"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ImageLabel.setIcon(change_icon);
 			}
 		});
 
@@ -589,7 +639,11 @@ public class ImSWproject {
 
 		public void itemStateChanged(ItemEvent e) {
 			AbstractButton sel = (AbstractButton) e.getItemSelectable();
-
+			int width_1 = 0;
+			int height_1 = 0;
+			int width_2 = 0;
+			int height_2 = 0;
+			
 			if (e.getStateChange() == ItemEvent.DESELECTED)
 				return;
 			if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -599,48 +653,245 @@ public class ImSWproject {
 				} else {
 					if (sel.getText().equals("액자1")) {
 						try {
-							// 배경이미지를 불러온다.
-							BufferedImage bg = ImageIO.read(new File("images/44.png"));
-							// 그 위에 덮씌울 이미지를 불러온다.
-							BufferedImage front = ImageIO.read(new File(filePath));
-							System.out.println(filePath);
-							// 오리지날 이미지의 크기보다 크게 메모리이미지 크기를 구성한다.
-							int width_1 = front.getWidth();
-							int height_1 = front.getHeight();
-							System.out.println(width_1);
-							int width_2 = front.getWidth() + 30;
-							int height_2 = front.getHeight() + 30;
-							BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
-							// 메모리이미지에서 Graphics2D를 얻어온다.
-							Graphics2D g1 = tmp.createGraphics();
-							// 메모리이미지에 그림을 그리자. 으싸 으싸~
-							g1.drawImage(bg, null, 0, 0);
-							g1.drawImage(front, (width_2 - width_1) / 2,
-									(height_2 - height_1) / 2, width_1,
-									height_1, null);
-							// 메모리 이미지를 파일로 저장한다.
-
-							File file = new File("images/3.jpg");
-							ImageIO.write(tmp, "jpeg", file);
-							
+							if(change_icon == null)
+							{
+								// 배경이미지를 불러온다.
+								BufferedImage bg = ImageIO.read(new File("images/deco_1.png"));
+								System.out.println("11111");
+								// 그 위에 덮씌울 이미지를 불러온다.
+								BufferedImage front = ImageIO.read(new File(filePath));
+								width_1 = front.getWidth();
+								height_1 = front.getHeight();
+								System.out.println(bg);
+								width_2 = front.getWidth() + 30;
+								height_2 = front.getHeight() + 30;
+								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
+								// 메모리이미지에서 Graphics2D를 얻어온다.
+								Graphics2D g1 = tmp.createGraphics();
+								// 메모리이미지에 그림을 그리자. 으싸 으싸~
+								g1.drawImage(bg, null, 0, 0);
+								g1.drawImage(front, (width_2 - width_1) / 2,
+										(height_2 - height_1) / 2, width_1,
+										height_1, null);
+								// 메모리 이미지를 파일로 저장한다.
+								File file = new File("images/Deco_image.png");
+								ImageIO.write(tmp, "png", file);
+								Deco_icon = new ImageIcon("images/Deco_image.png");
+							}
+							else
+							{
+								BufferedImage bg = ImageIO.read(new File("images/deco_1.png"));
+								System.out.println("22222");
+								BufferedImage front = ImageIO.read(new File("images/change_icon.png"));
+								width_1 = front.getWidth();
+								height_1 = front.getHeight();
+								System.out.println(width_1);
+								width_2 = front.getWidth() + 30;
+								height_2 = front.getHeight() + 30;
+								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
+								// 메모리이미지에서 Graphics2D를 얻어온다.
+								Graphics2D g1 = tmp.createGraphics();
+								// 메모리이미지에 그림을 그리자. 으싸 으싸~
+								g1.drawImage(bg, null, 0, 0);
+								g1.drawImage(front, (width_2 - width_1) / 2,
+										(height_2 - height_1) / 2, width_1,
+										height_1, null);
+								// 메모리 이미지를 파일로 저장한다.
+								File file = new File("images/Deco_image.png");
+								ImageIO.write(tmp, "png", file);
+								Deco_icon = new ImageIcon("images/Deco_image.png");
+							}							
 						} catch (IOException ioe) {
 							ioe.printStackTrace();
 						}
-						
-						icon3 = new ImageIcon("images/3.jpg");
-						ImageLabel.setIcon(icon3);
-						
+						//ImageLabel.setIcon(Deco_icon);
 						//String s = "images/3.jpg"; 
 						//File f = new File(s);
 						//f.delete();
-						
+						System.out.println(Deco_icon);
+						ImageLabel.setIcon(Deco_icon);
 						System.out.println("하이1");
 						
+						
 					} else if (sel.getText().equals("액자2")) {
+						try {
+							if(change_icon == null)
+							{
+								// 배경이미지를 불러온다.
+								BufferedImage bg = ImageIO.read(new File("images/deco_2.png"));
+								System.out.println("11111");
+								// 그 위에 덮씌울 이미지를 불러온다.
+								BufferedImage front = ImageIO.read(new File(filePath));
+								width_1 = front.getWidth();
+								height_1 = front.getHeight();
+								System.out.println(bg);
+								width_2 = front.getWidth() + 30;
+								height_2 = front.getHeight() + 30;
+								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
+								// 메모리이미지에서 Graphics2D를 얻어온다.
+								Graphics2D g1 = tmp.createGraphics();
+								// 메모리이미지에 그림을 그리자. 으싸 으싸~
+								g1.drawImage(bg, null, 0, 0);
+								g1.drawImage(front, (width_2 - width_1) / 2,
+										(height_2 - height_1) / 2, width_1,
+										height_1, null);
+								// 메모리 이미지를 파일로 저장한다.
+								File file = new File("images/Deco_image.png");
+								ImageIO.write(tmp, "png", file);
+								Deco_icon = new ImageIcon("images/Deco_image.png");
+							}
+							else
+							{
+								BufferedImage bg = ImageIO.read(new File("images/deco_2.png"));
+								System.out.println("22222");
+								BufferedImage front = ImageIO.read(new File("images/change_icon.png"));
+								width_1 = front.getWidth();
+								height_1 = front.getHeight();
+								System.out.println(width_1);
+								width_2 = front.getWidth() + 30;
+								height_2 = front.getHeight() + 30;
+								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
+								// 메모리이미지에서 Graphics2D를 얻어온다.
+								Graphics2D g1 = tmp.createGraphics();
+								// 메모리이미지에 그림을 그리자. 으싸 으싸~
+								g1.drawImage(bg, null, 0, 0);
+								g1.drawImage(front, (width_2 - width_1) / 2,
+										(height_2 - height_1) / 2, width_1,
+										height_1, null);
+								// 메모리 이미지를 파일로 저장한다.
+								File file = new File("images/Deco_image.png");
+								ImageIO.write(tmp, "png", file);
+								Deco_icon = new ImageIcon("images/Deco_image.png");
+							}							
+						} catch (IOException ioe) {
+							ioe.printStackTrace();
+						}
+						//ImageLabel.setIcon(Deco_icon);
+						//String s = "images/3.jpg"; 
+						//File f = new File(s);
+						//f.delete();
+						System.out.println(Deco_icon);
+						ImageLabel.setIcon(Deco_icon);
 						System.out.println("하이2");
 					} else if (sel.getText().equals("액자3")) {
+						try {
+							if(change_icon == null)
+							{
+								// 배경이미지를 불러온다.
+								BufferedImage bg = ImageIO.read(new File("images/deco_3.png"));
+								System.out.println("11111");
+								// 그 위에 덮씌울 이미지를 불러온다.
+								BufferedImage front = ImageIO.read(new File(filePath));
+								width_1 = front.getWidth();
+								height_1 = front.getHeight();
+								System.out.println(bg);
+								width_2 = front.getWidth() + 30;
+								height_2 = front.getHeight() + 30;
+								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
+								// 메모리이미지에서 Graphics2D를 얻어온다.
+								Graphics2D g1 = tmp.createGraphics();
+								// 메모리이미지에 그림을 그리자. 으싸 으싸~
+								g1.drawImage(bg, null, 0, 0);
+								g1.drawImage(front, (width_2 - width_1) / 2,
+										(height_2 - height_1) / 2, width_1,
+										height_1, null);
+								// 메모리 이미지를 파일로 저장한다.
+								File file = new File("images/Deco_image.png");
+								ImageIO.write(tmp, "png", file);
+								Deco_icon = new ImageIcon("images/Deco_image.png");
+							}
+							else
+							{
+								BufferedImage bg = ImageIO.read(new File("images/deco_3.png"));
+								System.out.println("22222");
+								BufferedImage front = ImageIO.read(new File("images/change_icon.png"));
+								width_1 = front.getWidth();
+								height_1 = front.getHeight();
+								System.out.println(width_1);
+								width_2 = front.getWidth() + 30;
+								height_2 = front.getHeight() + 30;
+								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
+								// 메모리이미지에서 Graphics2D를 얻어온다.
+								Graphics2D g1 = tmp.createGraphics();
+								// 메모리이미지에 그림을 그리자. 으싸 으싸~
+								g1.drawImage(bg, null, 0, 0);
+								g1.drawImage(front, (width_2 - width_1) / 2,
+										(height_2 - height_1) / 2, width_1,
+										height_1, null);
+								// 메모리 이미지를 파일로 저장한다.
+								File file = new File("images/Deco_image.png");
+								ImageIO.write(tmp, "png", file);
+								Deco_icon = new ImageIcon("images/Deco_image.png");
+							}							
+						} catch (IOException ioe) {
+							ioe.printStackTrace();
+						}
+						//ImageLabel.setIcon(Deco_icon);
+						//String s = "images/3.jpg"; 
+						//File f = new File(s);
+						//f.delete();
+						System.out.println(Deco_icon);
+						ImageLabel.setIcon(Deco_icon);
 						System.out.println("하이3");
 					} else if (sel.getText().equals("액자4")) {
+						try {
+							if(change_icon == null)
+							{
+								// 배경이미지를 불러온다.
+								BufferedImage bg = ImageIO.read(new File("images/deco_4.png"));
+								System.out.println("11111");
+								// 그 위에 덮씌울 이미지를 불러온다.
+								BufferedImage front = ImageIO.read(new File(filePath));
+								width_1 = front.getWidth();
+								height_1 = front.getHeight();
+								System.out.println(bg);
+								width_2 = front.getWidth() + 30;
+								height_2 = front.getHeight() + 30;
+								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
+								// 메모리이미지에서 Graphics2D를 얻어온다.
+								Graphics2D g1 = tmp.createGraphics();
+								// 메모리이미지에 그림을 그리자. 으싸 으싸~
+								g1.drawImage(bg, null, 0, 0);
+								g1.drawImage(front, (width_2 - width_1) / 2,
+										(height_2 - height_1) / 2, width_1,
+										height_1, null);
+								// 메모리 이미지를 파일로 저장한다.
+								File file = new File("images/Deco_image.png");
+								ImageIO.write(tmp, "png", file);
+								Deco_icon = new ImageIcon("images/Deco_image.png");
+							}
+							else
+							{
+								BufferedImage bg = ImageIO.read(new File("images/deco_4.png"));
+								System.out.println("22222");
+								BufferedImage front = ImageIO.read(new File("images/change_icon.png"));
+								width_1 = front.getWidth();
+								height_1 = front.getHeight();
+								System.out.println(width_1);
+								width_2 = front.getWidth() + 30;
+								height_2 = front.getHeight() + 30;
+								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
+								// 메모리이미지에서 Graphics2D를 얻어온다.
+								Graphics2D g1 = tmp.createGraphics();
+								// 메모리이미지에 그림을 그리자. 으싸 으싸~
+								g1.drawImage(bg, null, 0, 0);
+								g1.drawImage(front, (width_2 - width_1) / 2,
+										(height_2 - height_1) / 2, width_1,
+										height_1, null);
+								// 메모리 이미지를 파일로 저장한다.
+								File file = new File("images/Deco_image.png");
+								ImageIO.write(tmp, "png", file);
+								Deco_icon = new ImageIcon("images/Deco_image.png");
+							}							
+						} catch (IOException ioe) {
+							ioe.printStackTrace();
+						}
+						//ImageLabel.setIcon(Deco_icon);
+						//String s = "images/3.jpg"; 
+						//File f = new File(s);
+						//f.delete();
+						System.out.println(Deco_icon);
+						ImageLabel.setIcon(Deco_icon);
 						System.out.println("하이4");
 					}
 				}
