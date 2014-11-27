@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="sw_wansikcam-master/FirstSw/src"/>
+	<classpathentry kind="src" path="sw_wansikcam-master/src"/>
+	<classpathentry kind="lib" path="sw_wansikcam-master/FirstSw/forms-1.3.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="sw_wansikcam-master/bin"/>
+</classpath>
