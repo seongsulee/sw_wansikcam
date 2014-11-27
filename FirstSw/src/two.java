@@ -1,4 +1,5 @@
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.Window;
 
 import javax.imageio.ImageIO;
@@ -16,6 +17,9 @@ import java.net.URL;
 import java.io.File;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ConvolveOp;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
 import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
 import java.awt.image.ByteLookupTable;
@@ -185,26 +189,32 @@ public class two {
 		FilterLabel.setBounds(20, 95, 67, 15);
 		setpanel1.add(FilterLabel);
 		
-		JButton FilterBlackBut = new JButton("흑백");
-		FilterBlackBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		FilterBlackBut.addActionListener(new ActionListener() {
+		JButton FiltergrayBut = new JButton("그레이");
+		FiltergrayBut.setFont(new Font("굴림", Font.PLAIN, 12));
+		FiltergrayBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("흑백");
+				temp = new BufferedImage(temp.getWidth(), temp.getHeight(),
+						temp.TYPE_BYTE_GRAY);
+				Graphics g = temp.getGraphics();
+				g.drawImage(temp, 0, 0, null);
+				g.dispose();
+				ImageIcon tempIcon = new ImageIcon(temp);
+				ImageLabel.setIcon(tempIcon);
 			}
+
 		});
-		FilterBlackBut.setBounds(30, 125, 97, 23);
-		setpanel1.add(FilterBlackBut);
+		
+		FiltergrayBut.setBounds(30, 125, 97, 23);
+		setpanel1.add(FiltergrayBut);
 		
 		JButton FilterBlurBut = new JButton("흐림");
 		FilterBlurBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterBlurBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("흐림");
 				temp = blurFilter(temp);
 				ImageIcon tempIcon = new ImageIcon(temp);
 				ImageLabel.setIcon(tempIcon);
 			}
-
 			private BufferedImage blurFilter(BufferedImage temp) 
 			{
 				float[] blurMatrix = { 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f,
@@ -223,7 +233,32 @@ public class two {
 		FilterSepBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterSepBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("세피아");
+				temp = sepiaFilter(temp);
+				ImageIcon tempIcon = new ImageIcon(temp);
+				ImageLabel.setIcon(tempIcon);
+			}
+			private BufferedImage sepiaFilter(BufferedImage image) 
+			{
+				BufferedImage original = image;
+				image = new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_RGB);
+				for (int i=0;i<image.getWidth();i++)
+				    for (int j=0;j<image.getHeight();j++) {
+						int rgb = original.getRGB(i, j);
+
+						 int alpha = ((rgb >> 24) & 0xff);
+						 int red = ((rgb >> 16) & 0xff);
+						 int green = ((rgb >> 8) & 0xff);
+						 int blue = ((rgb ) & 0xff);
+
+						 int r = (int)(0.393*red+0.769*green+0.189*blue + 0.5);
+						 if (r>255) r = 255;
+						 int g = (int)(0.349*red+0.686*green+0.168*blue + 0.5);
+						 if (g>255) g = 255;
+						 int b = (int)(0.272*red+0.534*green+0.131*blue + 0.5);
+						 rgb = (alpha << 24) | (r << 16) | (g << 8) | b;
+						 image.setRGB(i,j, rgb);
+					 }
+				return image;
 			}
 		});
 		FilterSepBut.setBounds(313, 125, 97, 23);
@@ -234,13 +269,10 @@ public class two {
 		FilterSharBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				System.out.println("선명");
 				temp = sharpenFilter(temp);
 				ImageIcon tempIcon = new ImageIcon(temp);
 				ImageLabel.setIcon(tempIcon);
-				
 			}
-
 			private BufferedImage sharpenFilter(BufferedImage temp) {
 				float[] sharpenMatrix = { 0.0f, -1.0f, 0.0f, -1.0f, 5.0f,
 						-1.0f, 0.0f, -1.0f, 0.0f };
@@ -257,7 +289,6 @@ public class two {
 		FilterRevBut.setFont(new Font("굴림", Font.PLAIN, 12));
 		FilterRevBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("반전");
 				temp = invertFilter(temp);
 				ImageIcon tempIcon = new ImageIcon(temp);
 				ImageLabel.setIcon(tempIcon);
@@ -482,6 +513,12 @@ public class two {
 		ResetBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
+				try {
+					temp = ImageIO.read(new File(filePath));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				System.out.println("원본 되돌리기");
 				ImageLabel.setIcon(icon);
 			}
