@@ -53,6 +53,7 @@ public class two {
 	String filePath ;
 	Image origin;
 	BufferedImage temp =null;
+	ImageIcon tempIcon =null;
 	
 	public static void main(String[] args) 
 	{
@@ -193,18 +194,14 @@ public class two {
         FiltergrayBut.setFont(new Font("굴림", Font.PLAIN, 12));
         FiltergrayBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					BufferedImage Origin = ImageIO.read(new File(filePath));
-					temp = new BufferedImage(icon.getIconWidth(), icon
-							.getIconHeight(), BufferedImage.TYPE_BYTE_GRAY);
-					Graphics2D g2 = temp.createGraphics();
-					g2.drawImage(Origin, null, 0, 0);
-					g2.dispose();
-					ImageIcon tempIcon = new ImageIcon(temp);
-					ImageLabel.setIcon(tempIcon);
-				} catch (IOException ioe) {
-					ioe.printStackTrace();
-				}
+				//BufferedImage Origin = ImageIO.read(new File(filePath));
+//				temp = new BufferedImage(tempIcon.getIconWidth(), tempIcon
+//						.getIconHeight(), BufferedImage.TYPE_BYTE_GRAY);
+//				Graphics2D g2 = temp.createGraphics();
+//				g2.drawImage(temp, null, 0, 0);
+//				g2.dispose();
+//				tempIcon = new ImageIcon(temp);
+//				ImageLabel.setIcon(tempIcon);
 			}
 		});
         FiltergrayBut.setBounds(30, 125, 97, 23);
@@ -219,7 +216,7 @@ public class two {
 		FilterBlurBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				temp = blurFilter(temp);
-				ImageIcon tempIcon = new ImageIcon(temp);
+				tempIcon = new ImageIcon(temp);
 				ImageLabel.setIcon(tempIcon);
 			}
 			private BufferedImage blurFilter(BufferedImage temp) 
@@ -231,7 +228,6 @@ public class two {
 						blurMatrix), ConvolveOp.EDGE_NO_OP, null);
 				return blurFilter.filter(temp, null);
 			}
-	
 		});
 		FilterBlurBut.setBounds(174, 125, 97, 23);
 		setpanel1.add(FilterBlurBut);
@@ -241,7 +237,7 @@ public class two {
 		FilterSepBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				temp = sepiaFilter(temp);
-				ImageIcon tempIcon = new ImageIcon(temp);
+				tempIcon = new ImageIcon(temp);
 				ImageLabel.setIcon(tempIcon);
 			}
 			private BufferedImage sepiaFilter(BufferedImage image) 
@@ -277,7 +273,7 @@ public class two {
 			public void actionPerformed(ActionEvent e) 
 			{
 				temp = sharpenFilter(temp);
-				ImageIcon tempIcon = new ImageIcon(temp);
+				tempIcon = new ImageIcon(temp);
 				ImageLabel.setIcon(tempIcon);
 			}
 			private BufferedImage sharpenFilter(BufferedImage temp) {
@@ -297,7 +293,7 @@ public class two {
 		FilterRevBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				temp = invertFilter(temp);
-				ImageIcon tempIcon = new ImageIcon(temp);
+				tempIcon = new ImageIcon(temp);
 				ImageLabel.setIcon(tempIcon);
 			}
 			private BufferedImage invertFilter(BufferedImage temp) {
@@ -522,6 +518,7 @@ public class two {
 			{
 				try {
 					temp = ImageIO.read(new File(filePath));
+					tempIcon = new ImageIcon(temp);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
