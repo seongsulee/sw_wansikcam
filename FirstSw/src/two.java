@@ -34,7 +34,6 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
 public class two {
-	//  private MyFilter colorFilter = new ColorFilter();
 
 	private JFrame frmWansikcam;
 	private JTextField RotauserText;
