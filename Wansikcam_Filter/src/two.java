@@ -18,7 +18,6 @@ import javax.swing.event.*;
 import javax.swing.filechooser.*;
 
 import java.io.*;
-//import java.net.MalformedURLException;
 import java.net.URL;
 import java.io.File;
 import java.awt.image.BufferedImageOp;
@@ -89,12 +88,6 @@ public class two {
 	
 	public void BrightImage(float Value)//밝기 조절 메소드
 	{
-		//Image BrIm = icon.getImage();
-		// Image -> BufferedImage ��ȯ
-	    //BufferedImage temp = new BufferedImage
-	    //        (BrIm.getWidth(null), BrIm.getHeight(null), BufferedImage.TYPE_INT_RGB);
-	    //temp.getGraphics().drawImage(BrIm, 0, 0, null);
-	    
 	    float scaleFactor = (float) (1.0 + (Value / 120.0));
 	    RescaleOp op = new RescaleOp(scaleFactor, 0, null);
 	    temp = op.filter(temp, null);
