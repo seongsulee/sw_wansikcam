@@ -1,4 +1,4 @@
-﻿import java.awt.Color;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -46,6 +46,7 @@ import javax.imageio.ImageIO;
 
 import java.io.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import javax.swing.event.*;
@@ -60,12 +61,16 @@ public class two {
 	private JTextField textField;
 	private JTextField textField_1;
 	public JLabel ImageLabel; //�׸��� �ҷ��� Label
-	
+		
+	JRadioButton RotacwRadio;
+	JRadioButton RotaccwRadio;
+	JRadioButton RotauserRadio;
 	JRadioButton GifRadio;
 	JRadioButton PngRadio;
 	JRadioButton BmpRadio;
 	JRadioButton JpgRadio;
 	JRadioButton JpegRadio;
+	String rotcheck = null;
 	String form ;
 	public JPanel Pn;
 	ImageIcon icon; //불러온 사진의 값을 갖는 함수
@@ -154,40 +159,28 @@ public BufferedImage horizontalflip(BufferedImage img)
     
     public void VerticalFlipImage()
     {
-    	//Image BrIm = icon.getImage();
-		
-		//BufferedImage temp = new BufferedImage(BrIm.getWidth(null), BrIm.getHeight(null), BufferedImage.TYPE_INT_RGB);
-	    //temp.getGraphics().drawImage(BrIm, 0, 0, null);
-	    
+  
         two__ flipper = new two__();
    
         //상하반전
         temp = flipper.verticalflip(temp);
-        //flipper.writeImage(img, outputImageLocationVF, extension);
         
         ImageIcon tempIcon = new ImageIcon(temp);
 	    ImageLabel.setIcon(tempIcon);
-	    //icon = tempIcon;
+	    
 	    tempIcon = new ImageIcon(temp);
     }
     
     public void HorizontalGlipImage()
     {
-    	//Image BrIm = icon.getImage();
-	    //BufferedImage temp = new BufferedImage(BrIm.getWidth(null), BrIm.getHeight(null), BufferedImage.TYPE_INT_RGB);
-	    //temp.getGraphics().drawImage(BrIm, 0, 0, null);
-	    
         two__ flipper = new two__();
  
         //좌우반전
         temp = flipper.horizontalflip(temp);
-        //flipper.writeImage(temp, outputImageLocationHF, extension);
         
         ImageIcon tempIcon = new ImageIcon(temp);
 	    ImageLabel.setIcon(tempIcon);
-	    //icon = tempIcon;
 	    tempIcon = new ImageIcon(temp);
-	    
     }
     
 	public static void main(String[] args) 
@@ -282,7 +275,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 				{
 					if(Deco_icon != null)
 					{
-						System.out.println(Deco_icon);
 						change_icon = Deco_icon;
 						Image img = change_icon.getImage();
 						BufferedImage bi = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_RGB);
@@ -290,52 +282,9 @@ public BufferedImage horizontalflip(BufferedImage img)
 						g2.drawImage(img, 0, 0, null);
 						g2.dispose();
 						temp = bi;
-						//try {
-						//	ImageIO.write(bi, "png", new File("images/change_icon.png"));
-						//} catch (IOException e1) {
-						//	// TODO Auto-generated catch block
-						//	e1.printStackTrace();
-						//}
 						ImageLabel.setIcon(change_icon);
 					}
 				}
-				/*try {
-					// 배경이미지를 불러온다.
-					BufferedImage bg = ImageIO.read(new File("images/44.png"));
-					// 그 위에 덮씌울 이미지를 불러온다.
-					BufferedImage front = ImageIO.read(new File(
-							"images/rolloverIcon.gif"));
-					// 오리지날 이미지의 크기보다 크게 메모리이미지 크기를 구성한다.
-					int width_1 = front.getWidth();
-					int height_1 = front.getHeight();
-					int width_2 = front.getWidth() + 10;
-					int height_2 = front.getHeight() + 10;
-					BufferedImage tmp = new BufferedImage(width_2, height_2,
-							BufferedImage.TYPE_INT_RGB);
-					// 메모리이미지에서 Graphics2D를 얻어온다.
-					Graphics2D g1 = tmp.createGraphics();
-					// 메모리이미지에 그림을 그리자. 으싸 으싸~
-					g1.drawImage(bg, null, 0, 0);
-					g1.drawImage(front, (width_2 - width_1) / 2,
-							(height_2 - height_1) / 2, width_1, height_1, null);
-					// 메모리 이미지를 파일로 저장한다.
-
-					File file = new File("images/3.jpg");
-					ImageIO.write(tmp, "jpeg", file);
-				} catch (IOException ioe) {
-					ioe.printStackTrace();
-				}
-				icon = new ImageIcon("images/3.jpg");
-
-				
-				 * String s = "images/3.jpg"; File f = new File(s); if
-				 * (f.delete()) { System.out.println("파일 또는 디렉토리를 성공적으로 지웠습니다: "
-				 * + s); } else { System.err.println("파일 또는 디렉토리 지우기 실패: " + s);
-				 * }
-
-				System.out.println("이미지 합성이 완료되었습니다... 에헤라 디야~~");
-
-			}*/
 			}
 		});
 
@@ -613,24 +562,27 @@ public BufferedImage horizontalflip(BufferedImage img)
 		FilterRevBut.setBounds(174, 158, 97, 23);
 		setpanel1.add(FilterRevBut);
 		
+		//////////////////////////////////////////////////////////////////////////
 		JLabel TransLabel = new JLabel("사진 변형");
 		TransLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
 		TransLabel.setBounds(20, 201, 67, 15);
 		setpanel1.add(TransLabel);
 		
-		JRadioButton RotacwRadio = new JRadioButton("시계 방향");
+		ButtonGroup RotaG = new ButtonGroup();
+		
+		RotacwRadio = new JRadioButton("시계 방향");
 		RotacwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotacwRadio.setBackground(Color.WHITE);
 		RotacwRadio.setBounds(30, 254, 121, 23);
 		setpanel1.add(RotacwRadio);
 		
-		JRadioButton RotaccwRadio = new JRadioButton("반시계 방향");
+		RotaccwRadio = new JRadioButton("반시계 방향");
 		RotaccwRadio.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotaccwRadio.setBackground(Color.WHITE);
 		RotaccwRadio.setBounds(174, 254, 121, 23);
 		setpanel1.add(RotaccwRadio);
 		
-		JRadioButton RotauserRadio = new JRadioButton("사용자 지정 : ");
+		RotauserRadio = new JRadioButton("사용자 지정 : ");
 		RotauserRadio.setFont(new Font("굴림", Font.PLAIN, 12));
 		RotauserRadio.setBackground(Color.WHITE);
 		RotauserRadio.setBounds(30, 287, 108, 23);
@@ -647,15 +599,69 @@ public BufferedImage horizontalflip(BufferedImage img)
 		setpanel1.add(RotauserText);
 		RotauserText.setColumns(10);
 		
+		RotaG.add(RotacwRadio);
+		RotaG.add(RotaccwRadio);
+		RotaG.add(RotauserRadio);		
+		RotacwRadio.addItemListener(new RoteItemListener());
+		RotaccwRadio.addItemListener(new RoteItemListener());
+		RotauserRadio.addItemListener(new RoteItemListener());
+		
 		JButton RotasetBut = new JButton("적용");
 		RotasetBut.setFont(new Font("굴림", Font.PLAIN, 12));
-		RotasetBut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		RotasetBut.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(rotcheck == "cw")
+					rotate(90);
+				else if(rotcheck == "ccw")
+					rotate(-90);
+				else if(rotcheck == "user")
+				{
+					int dir;
+					dir = Integer.parseInt(RotauserText.getText());
+					rotate(dir);
+				}
 			}
+			void rotate(int direction)
+		    {
+				double angle =0.0;
+				
+				angle = direction;
+
+		        Image img = Toolkit.getDefaultToolkit().createImage(temp.getSource());
+				ImageIcon roteIcon = new ImageIcon(img);
+				Image rotimg = roteIcon.getImage();
+		        
+		        double rads = Math.toRadians(angle);
+		        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+		        int w = temp.getWidth();
+		        int h = temp.getHeight();
+		        int newWidth = (int) Math.floor(w * cos + h * sin);
+		        int newHeight = (int) Math.floor(h * cos + w * sin);
+
+				BufferedImage bi = null;
+		        bi = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+		        Graphics2D g2d = bi.createGraphics();
+		        AffineTransform at = new AffineTransform();
+		        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+
+		        int x = w / 2;
+		        int y = h / 2;
+
+		        at.rotate(Math.toRadians(angle), x, y);
+		        g2d.setTransform(at);
+		        g2d.drawImage(rotimg, 0, 0, null);
+		        g2d.dispose();
+		        
+				temp = bi;
+				tempIcon = new ImageIcon(temp);
+				ImageLabel.setIcon(tempIcon);
+		    }
 		});
 		RotasetBut.setBounds(313, 287, 97, 23);
 		setpanel1.add(RotasetBut);
-		
+		//////////////////////////////////////////////////////////////////////////
 		JLabel RevLabel = new JLabel("반전");
 		RevLabel.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		RevLabel.setBounds(30, 320, 80, 15);
@@ -831,12 +837,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 				g2.drawImage(img, 0, 0, null);
 				g2.dispose();
 				temp = bi;
-			//	try {
-			//		ImageIO.write(bi, "png", new File("images/change_icon.png"));
-			//	} catch (IOException e1) {
-			//		// TODO Auto-generated catch block
-			//		e1.printStackTrace();
-			//	}
 				ImageLabel.setIcon(change_icon);
 			}
 		});
@@ -906,16 +906,13 @@ public BufferedImage horizontalflip(BufferedImage img)
 		FormsetBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				System.out.println("체크 버튼 : "+form);
 				//파일명 자르기
 				String fileNm = filePath.substring(0,filePath.lastIndexOf("."));
-				System.out.println(fileNm+"체크버튼");
-				
+			
 				BufferedImage image = null;
 				try {
 					image = ImageIO.read(new File(filePath));
 				} catch (IOException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}		
 			  	try {
@@ -923,7 +920,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 			  	} 
 			  	catch (IOException e1) 
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -957,7 +953,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 					temp = ImageIO.read(new File(filePath));
 					tempIcon = new ImageIcon(temp);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				ImageLabel.setIcon(icon);
@@ -988,11 +983,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 		FileMenu.add(saveItem);
 		
 		menuBar.add(FileMenu);
-		//this.setJMenuBar(menuBar);
-		
-		
-		JMenu mnNewMenu_1 = new JMenu("New menu");
-		menuBar.add(mnNewMenu_1);
 	}
 	
 	//희정 - 포멧변경
@@ -1014,7 +1004,20 @@ public BufferedImage horizontalflip(BufferedImage img)
 				form = "jpeg";	
 		}
 	}
-	
+	class RoteItemListener implements ItemListener
+	{		
+		public void itemStateChanged(ItemEvent e) 
+		{		
+			if (e.getStateChange() == ItemEvent.DESELECTED)
+				return;
+			if(RotacwRadio.isSelected())
+				rotcheck = "cw";
+			else if(RotaccwRadio.isSelected())
+				rotcheck = "ccw";
+			else if(RotauserRadio.isSelected())
+				rotcheck = "user";	
+		}
+	}
 	class CutMouseListener implements MouseListener{
 		public void mouseEntered(MouseEvent e){}
 		
@@ -1088,12 +1091,10 @@ public BufferedImage horizontalflip(BufferedImage img)
 							{
 								// 배경이미지를 불러온다.
 								BufferedImage bg = ImageIO.read(new File("images/deco_1.png"));
-								System.out.println("11111");
 								// 그 위에 덮씌울 이미지를 불러온다.
 								BufferedImage front = ImageIO.read(new File(filePath));
 								width_1 = front.getWidth();
 								height_1 = front.getHeight();
-								System.out.println(bg);
 								width_2 = front.getWidth() + 30;
 								height_2 = front.getHeight() + 30;
 								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
@@ -1107,15 +1108,10 @@ public BufferedImage horizontalflip(BufferedImage img)
 								g1.dispose();
 								Image im = Toolkit.getDefaultToolkit().createImage(tmp.getSource());
 								Deco_icon = new ImageIcon(im);
-								// 메모리 이미지를 파일로 저장한다.
-								//File file = new File("images/Deco_image.png");
-								//ImageIO.write(tmp, "png", file);
-								//Deco_icon = new ImageIcon("images/Deco_image.png");
 							}
 							else
 							{
 								BufferedImage bg = ImageIO.read(new File("images/deco_1.png"));
-								System.out.println("22222");
 								BufferedImage front = new BufferedImage(
 										change_icon.getIconWidth(),
 										change_icon.getIconHeight(),
@@ -1126,7 +1122,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 									g.dispose();
 								width_1 = front.getWidth();
 								height_1 = front.getHeight();
-								System.out.println(width_1);
 								width_2 = front.getWidth() + 30;
 								height_2 = front.getHeight() + 30;
 								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
@@ -1140,21 +1135,11 @@ public BufferedImage horizontalflip(BufferedImage img)
 								g1.dispose();
 								Image im = Toolkit.getDefaultToolkit().createImage(tmp.getSource());
 								Deco_icon = new ImageIcon(im);
-								// 메모리 이미지를 파일로 저장한다.
-								//File file = new File("images/Deco_image.png");
-								//ImageIO.write(tmp, "png", file);
-								//Deco_icon = new ImageIcon("images/Deco_image.png");
 							}							
 						} catch (IOException ioe) {
 							ioe.printStackTrace();
 						}
-						//ImageLabel.setIcon(Deco_icon);
-						//String s = "images/3.jpg"; 
-						//File f = new File(s);
-						//f.delete();
-						//System.out.println(Deco_icon);
 						ImageLabel.setIcon(Deco_icon);
-						//System.out.println("하이1");
 						
 						
 					} else if (sel.getText().equals("액자2")) {
@@ -1163,12 +1148,10 @@ public BufferedImage horizontalflip(BufferedImage img)
 							{
 								// 배경이미지를 불러온다.
 								BufferedImage bg = ImageIO.read(new File("images/deco_2.png"));
-								System.out.println("11111");
 								// 그 위에 덮씌울 이미지를 불러온다.
 								BufferedImage front = ImageIO.read(new File(filePath));
 								width_1 = front.getWidth();
 								height_1 = front.getHeight();
-								System.out.println(bg);
 								width_2 = front.getWidth() + 30;
 								height_2 = front.getHeight() + 30;
 								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
@@ -1187,7 +1170,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 							else
 							{
 								BufferedImage bg = ImageIO.read(new File("images/deco_2.png"));
-								System.out.println("22222");
 								BufferedImage front = new BufferedImage(
 										change_icon.getIconWidth(),
 										change_icon.getIconHeight(),
@@ -1198,7 +1180,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 									g.dispose();
 								width_1 = front.getWidth();
 								height_1 = front.getHeight();
-								System.out.println(width_1);
 								width_2 = front.getWidth() + 30;
 								height_2 = front.getHeight() + 30;
 								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
@@ -1217,25 +1198,17 @@ public BufferedImage horizontalflip(BufferedImage img)
 						} catch (IOException ioe) {
 							ioe.printStackTrace();
 						}
-						//ImageLabel.setIcon(Deco_icon);
-						//String s = "images/3.jpg"; 
-						//File f = new File(s);
-						//f.delete();
-						System.out.println(Deco_icon);
 						ImageLabel.setIcon(Deco_icon);
-						System.out.println("하이2");
 					} else if (sel.getText().equals("액자3")) {
 						try {
 							if(change_icon == null)
 							{
 								// 배경이미지를 불러온다.
 								BufferedImage bg = ImageIO.read(new File("images/deco_3.png"));
-								System.out.println("11111");
 								// 그 위에 덮씌울 이미지를 불러온다.
 								BufferedImage front = ImageIO.read(new File(filePath));
 								width_1 = front.getWidth();
 								height_1 = front.getHeight();
-								System.out.println(bg);
 								width_2 = front.getWidth() + 30;
 								height_2 = front.getHeight() + 30;
 								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
@@ -1254,7 +1227,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 							else
 							{
 								BufferedImage bg = ImageIO.read(new File("images/deco_3.png"));
-								System.out.println("22222");
 								BufferedImage front = new BufferedImage(
 										change_icon.getIconWidth(),
 										change_icon.getIconHeight(),
@@ -1265,7 +1237,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 									g.dispose();
 								width_1 = front.getWidth();
 								height_1 = front.getHeight();
-								System.out.println(width_1);
 								width_2 = front.getWidth() + 30;
 								height_2 = front.getHeight() + 30;
 								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
@@ -1284,25 +1255,17 @@ public BufferedImage horizontalflip(BufferedImage img)
 						} catch (IOException ioe) {
 							ioe.printStackTrace();
 						}
-						//ImageLabel.setIcon(Deco_icon);
-						//String s = "images/3.jpg"; 
-						//File f = new File(s);
-						//f.delete();
-						System.out.println(Deco_icon);
 						ImageLabel.setIcon(Deco_icon);
-						System.out.println("하이3");
 					} else if (sel.getText().equals("액자4")) {
 						try {
 							if(change_icon == null)
 							{
 								// 배경이미지를 불러온다.
 								BufferedImage bg = ImageIO.read(new File("images/deco_4.png"));
-								System.out.println("11111");
 								// 그 위에 덮씌울 이미지를 불러온다.
 								BufferedImage front = ImageIO.read(new File(filePath));
 								width_1 = front.getWidth();
 								height_1 = front.getHeight();
-								System.out.println(bg);
 								width_2 = front.getWidth() + 30;
 								height_2 = front.getHeight() + 30;
 								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
@@ -1321,7 +1284,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 							else
 							{
 								BufferedImage bg = ImageIO.read(new File("images/deco_4.png"));
-								System.out.println("22222");
 								
 								BufferedImage front = new BufferedImage(
 										change_icon.getIconWidth(),
@@ -1334,7 +1296,6 @@ public BufferedImage horizontalflip(BufferedImage img)
 
 								width_1 = front.getWidth();
 								height_1 = front.getHeight();
-								System.out.println(width_1);
 								width_2 = front.getWidth() + 30;
 								height_2 = front.getHeight() + 30;
 								BufferedImage tmp = new BufferedImage(width_2,height_2, BufferedImage.TYPE_INT_RGB);
@@ -1353,13 +1314,7 @@ public BufferedImage horizontalflip(BufferedImage img)
 						} catch (IOException ioe) {
 							ioe.printStackTrace();
 						}
-						//ImageLabel.setIcon(Deco_icon);
-						//String s = "images/3.jpg"; 
-						//File f = new File(s);
-						//f.delete();
-						System.out.println(Deco_icon);
 						ImageLabel.setIcon(Deco_icon);
-						System.out.println("하이4");
 					}
 				}
 			}
@@ -1408,26 +1363,64 @@ public BufferedImage horizontalflip(BufferedImage img)
 	class SaveActionListener implements ActionListener 
 	{
 		
-		JFileChooser chooser;
-
-		SaveActionListener() 
-		{
-			chooser = new JFileChooser();
-		}
-
 		public void actionPerformed(ActionEvent e) 
 		{
+			String fileForm = filePath.substring(filePath.lastIndexOf(".") + 1);
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					"Images", "jpg", "gif", "jpeg", "png", "bmp");
-			chooser.setFileFilter(filter);
-			
-			int ret = chooser.showSaveDialog(null);
-			if (ret != JFileChooser.APPROVE_OPTION) 
-			{
-				JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.",
-						"경고", JOptionPane.WARNING_MESSAGE);
+					"PNG(*.png)", "png"); // png파일필터
+			FileNameExtensionFilter filter2 = new FileNameExtensionFilter(
+					"JPG(*.jpg)", "jpg");// jpg파일필터
+			FileNameExtensionFilter filter3 = new FileNameExtensionFilter(
+					"JPEG(*.jpeg)", "jpeg"); // jpeg파일필터
+			FileNameExtensionFilter filter4 = new FileNameExtensionFilter(
+					"GIF(*.gif)", "gif");// gif파일필터
+			FileNameExtensionFilter filter5 = new FileNameExtensionFilter(
+					"BMP(*.bmp)", "bmp"); // png파일필터
+			JFileChooser fc = new JFileChooser();
+			fc.setFileFilter(filter);
+			fc.setFileFilter(filter2);
+			fc.setFileFilter(filter3);
+			fc.setFileFilter(filter4);
+			fc.setFileFilter(filter5);
+
+			fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			int returnVal = fc.showSaveDialog(null);
+
+			if (returnVal == JFileChooser.CANCEL_OPTION) {
 				return;
 			}
-		}	
+			String filename;
+			File file = fc.getSelectedFile();
+			if (file.getName().contains(".jpg")
+					|| file.getName().contains(".JPG")
+					|| file.getName().contains(".PNG")
+					|| file.getName().contains(".png")
+					|| file.getName().contains(".GIF")
+					|| file.getName().contains(".gif")
+					|| file.getName().contains(".BMP")
+					|| file.getName().contains(".bmp")
+					|| file.getName().contains(".JPEG")
+					|| file.getName().contains(".jpeg"))
+				filename = file.getName(); // 파일창에 확장자 안적으면 불러온파일의 포멧으로 저장
+			else {
+				file = new File(fc.getSelectedFile() + "." + fileForm);
+				filename = file.getName();
+			}
+
+			if (file.isFile()) // 저장 하려는 파일이름이 이미 존재하면 물어보고 확인하면 덮어씀
+			{
+				JLabel msg = new JLabel();
+				msg.setText("현재 파일이 있습니디. 바꾸시겠습니까?");
+				if (!(JOptionPane.showConfirmDialog(null, msg, "확인",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION)) {
+					return;
+				}
+			}
+			try {
+				ImageIO.write(temp, fileForm, file);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 }
