@@ -1,13 +1,12 @@
-package sw_project_wansikcam;
-
+package sw_wansikcam;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-public class CutImage {
-	// Àü¿ªÇÊµå·Î ¸¶¿ì½º ÁÂÇ¥°ª, ÀÚ¸£±â °¡´É¿©ºÎ ÀúÀå
+public class CropImage {
+	// ï¿½ìŸ¾ï¿½ë¿­ï¿½ë¸˜ï¿½ë±¶æ¿¡ï¿½ ï§ë‰ìŠ¦ï¿½ë’ª é†«ëš°ëª´åª›ï¿½, ï¿½ì˜„ç‘œë‹¿ë¦° åª›ï¿½ï¿½ë’«ï¿½ë¿¬éºï¿½ ï¿½ï¿½ï¿½ì˜£
 	public boolean cutInable = false;
 	public int x, y, x_, y_;
 	
@@ -28,18 +27,18 @@ public class CutImage {
 	public ImageIcon cutImage(ImageIcon _icon){
 		Image img = _icon.getImage();
 				
-		// Image -> BufferedImage º¯È¯
+		// Image -> BufferedImage è¹‚ï¿½ï¿½ì†š
 		BufferedImage bIm = new BufferedImage
 				(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
 		bIm.getGraphics().drawImage(img, 0, 0, null);
 		
-		// ½ÃÀÛÁ¡(x,y)¿¡¼­ ³¡³ª´Â ÁöÁ¡(x_, y_)±îÁö ÀÚ¸¥´Ù
+		// ï¿½ë–†ï¿½ì˜‰ï¿½ì (x,y)ï¿½ë¿‰ï¿½ê½Œ ï¿½ê±¹ï¿½êµ¹ï¿½ë’— ï§ï¿½ï¿½ì (x_, y_)æºëš¯ï¿½ ï¿½ì˜„ç‘œëªƒë–
 		bIm = bIm.getSubimage(x, y, x_, y_);
 		
-		// BufferedImage -> Image º¯È¯
+		// BufferedImage -> Image è¹‚ï¿½ï¿½ì†š
 		Image cutIm = Toolkit.getDefaultToolkit().createImage(bIm.getSource());
 		
-		// ÀÌ¹ÌÁö¶óº§¿¡ Ãâ·Â
+		// ï¿½ì” èª˜ëª„ï¿½ï¿½ì”ªè¸°â‘¥ë¿‰ ç•°ì’•ì °
 		ImageIcon reicon = new ImageIcon(cutIm);
 		return reicon;
 		
@@ -55,26 +54,26 @@ public class CutImage {
 	}
 	
 	public ImageIcon mouseReleased(ImageIcon _icon, int _x, int _y){
-		// ³¡³ª´Â À§Ä¡¸¦ Ã£´Â´Ù.
+		// ï¿½ê±¹ï¿½êµ¹ï¿½ë’— ï¿½ìç§»ì„ï¿½ï¿½ ï§¡ì–œë’—ï¿½ë–.
 		if (cutInable == true){
 			int width = (512 - _icon.getIconWidth()) / 2;
 			int height = (512- _icon.getIconHeight()) / 2;
 			x_ = _x-width;
 			y_ = _y-height;
 			
-			// Å©±â¸¦ ±¸ÇÑ´Ù
+			// ï¿½ê²•æ¹²ê³•ï¿½ï¿½ æ´Ñ‹ë¸³ï¿½ë–
 			int xDistance = Math.abs(x - x_);
 			int yDistance = Math.abs(y - y_);
 			
-			// ÀÛÀº °ªÀ» ¼±ÅÃÇÏ¿© ½ÃÀÛÁöÁ¡À¸·Î ÁöÁ¤ÇÑ´Ù 
+			// ï¿½ì˜‰ï¿½ï¿½ åª›ë¯ªì“£ ï¿½ê½‘ï¿½ê¹®ï¿½ë¸¯ï¿½ë¿¬ ï¿½ë–†ï¿½ì˜‰ï§ï¿½ï¿½ì ï¿½ì‘æ¿¡ï¿½ ï§ï¿½ï¿½ì ™ï¿½ë¸³ï¿½ë– 
 			x = x < x_? x : x_;
 			y = y < y_? y : y_;
 			
-			// ÀÓ½ÃÀü¿ªÇÊµå¿¡ ´ëÀÔÇØÁØ´Ù
+			// ï¿½ì—«ï¿½ë–†ï¿½ìŸ¾ï¿½ë¿­ï¿½ë¸˜ï¿½ë±¶ï¿½ë¿‰ ï¿½ï¿½ï¿½ì—¯ï¿½ë¹ä»¥ï¿½ï¿½ë–
 			x_ = xDistance;
 			y_ = yDistance;
 			
-			// ÀÚ¸£±â ¸Ş¼Òµå È£Ãâ
+			// ï¿½ì˜„ç‘œë‹¿ë¦° ï§ë¶¿ëƒ¼ï¿½ë±¶ ï¿½ìƒ‡ç•°ï¿½
 			return cutImage(_icon);
 		}
 		return null;
