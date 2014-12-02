@@ -18,10 +18,10 @@ public class MergeImage {
 	private int minY = 100000;
 	
 	public MergeImage(){
-		openfile();
+		openFiles();
 	}
 	
-	private void openfile(){
+	private void openFiles(){
 		JFileChooser chooser = new JFileChooser();
 		chooser.setMultiSelectionEnabled(true);
 		
