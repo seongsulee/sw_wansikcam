@@ -59,7 +59,7 @@ public class two {
 	private JTextField RotauserText;
 	private JTextField textField;
 	private JTextField textField_1;
-	public JLabel ImageLabel; //�׸��� �ҷ��� Label
+	public JLabel ImageLabel; 
 		
 	JRadioButton RotacwRadio;
 	JRadioButton RotaccwRadio;
@@ -84,7 +84,7 @@ public class two {
 	ImageIcon change_icon;
 	
 	JSlider Brightslider;
-	JLabel BrightvalueLabel;//0 ��
+	JLabel BrightvalueLabel;
 	
 	public void BrightImage(float Value)//밝기 조절 메소드
 	{
